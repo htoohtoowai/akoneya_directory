@@ -14,4 +14,6 @@ class SubCategory extends Model
     {
         $filters->apply($query);
     }
+
 }
+

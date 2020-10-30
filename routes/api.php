@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::group(['middleware' => 'localization'], function () {
+Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
 
-	Route::get('zones', 'API\ZoneController@getZoneList');
+    Route::get('categories','CategoryController@getCategoryList');
 
-	Route::get('zones/{zoneId}/townships', 'API\TownshipController@getByZoneId');
+    Route::get('zones', 'ZoneController@getZoneList');
 
-	Route::get('subcategories/{subCategoryId}/services', 'API\ServiceController@getServiceList');
-    
+	Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
+
+	Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
+
 });

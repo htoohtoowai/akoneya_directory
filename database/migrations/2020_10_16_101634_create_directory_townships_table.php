@@ -22,7 +22,6 @@ class CreateDirectoryTownshipsTable extends Migration
                 $table->boolean('deleted_status')->default('0');
             });
         }
-        
     }
 
     /**
