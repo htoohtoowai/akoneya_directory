@@ -64,6 +64,12 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'akoneya' => [
+            'driver' => 'local',
+            'root' => env('AKONEYA_MEDIA_STORAGE_PATH', '/media/akoneya'),
+            'url' => env('AKONEYA_MEDIA_STORAGE_URL')
+        ]
+
     ],
 
     /*
