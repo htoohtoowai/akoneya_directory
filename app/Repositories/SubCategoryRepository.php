@@ -3,12 +3,12 @@ namespace App\Repositories;
 use App\Models\SubCategory;
 use App\Repositories\ResponseRepository;
 use App\Http\Resources\SubCategoryListCollection;
-
+use App\Repositories\ServiceRepository;
 
 class SubCategoryRepository extends BaseRepository
 {   
 
-    public function __construct(SubCategory $subCategory,ResponseRepository $responseRepo)
+    public function __construct(SubCategory $subCategory,ResponseRepository $responseRepo, ServiceRepository $serviceRepo)
     {
         $this->subCategory = $subCategory;
         $this->successStatusCode = config('http_status.success');
@@ -17,6 +17,7 @@ class SubCategoryRepository extends BaseRepository
         $this->unauthorizedStatusCode = config('http_status.unauthorized');
         $this->disableDeletedStatus = config('enums.disableDeletedStatus');
         $this->responseRepo = $responseRepo;
+        $this->serviceRepo = $serviceRepo;
 
         $this->perPage = config('enums.perPage');
 
@@ -43,7 +44,7 @@ class SubCategoryRepository extends BaseRepository
 
     public function subCategoryListByLang($categoryId,$categoryName){
         
-        $subCategories = $this->subCategory->select('id', $categoryName)
+        $subCategories = $this->subCategory->select('id', $categoryName,'service_code')
                                             ->where('deleted_status', $this->disableDeletedStatus)
                                             ->where('category_id', $categoryId)
                                             ->paginate($this->perPage);
@@ -52,7 +53,7 @@ class SubCategoryRepository extends BaseRepository
         foreach ($subCategories as $key =>  $category) {
             $data[$key]['id'] = $category->id;
             $data[$key]['categoryName'] = $category->$categoryName;
-            $data[$key]['totalContact'] = 100;
+            $data[$key]['totalContact'] = $this->serviceRepo->checkServiceModel($category->service_code)->count();
         }
 
         return $data;

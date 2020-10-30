@@ -13,15 +13,17 @@ class CreateDirectoryCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('directory_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('category_name');
-            $table->string('category_name_mm');
-            $table->string('category_name_zh')->nullable();
-            $table->string('image')->nullable();
-            $table->boolean('deleted_status')->default('0');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('directory_categories')) {
+            Schema::create('directory_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('category_name');
+                $table->string('category_name_mm');
+                $table->string('category_name_zh')->nullable();
+                $table->string('image')->nullable();
+                $table->boolean('deleted_status')->default('0');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
