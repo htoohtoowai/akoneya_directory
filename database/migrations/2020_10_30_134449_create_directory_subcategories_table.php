@@ -13,16 +13,18 @@ class CreateDirectorySubcategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('directory_subcategories', function (Blueprint $table) {
-            $table->id();
-            $table->string('subcategory_name');
-            $table->string('subcategory_name_mm');
-            $table->string('subcategory_name_zh')->nullable();
-            $table->string('service_code');
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->boolean('deleted_status')->default('0');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('directory_subcategories')) {
+            Schema::create('directory_subcategories', function (Blueprint $table) {
+                $table->id();
+                $table->string('subcategory_name');
+                $table->string('subcategory_name_mm');
+                $table->string('subcategory_name_zh')->nullable();
+                $table->string('service_code');
+                $table->unsignedBigInteger('category_id')->nullable();
+                $table->boolean('deleted_status')->default('0');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
