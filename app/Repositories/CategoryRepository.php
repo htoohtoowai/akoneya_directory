@@ -5,17 +5,20 @@ use App\Repositories\BaseRepository;
 use App\Repositories\ResponseRepository;
 use App\Http\Resources\CategoryListCollection;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
 class CategoryRepository extends BaseRepository
 {
 	protected $model;
+	protected $subCategoryModel;
     protected $request;
     protected $responseRepo;
 
-	public function __construct(Category $model, Request $request, ResponseRepository $responseRepo)
+	public function __construct(Category $model, SubCategory $subCategoryModel, Request $request, ResponseRepository $responseRepo)
 	{
         $this->model = $model;
+        $this->subCategoryModel = $subCategoryModel;
         $this->request = $request;
         $this->responseRepo = $responseRepo;
         $this->perPage = config('enums.perPage');
@@ -39,18 +42,23 @@ class CategoryRepository extends BaseRepository
         return $this->responseRepo->successResponse(new CategoryListCollection($categories, $paginator), $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
-    public function categoryListByLang($categoryName){
-        
+    public function categoryListByLang($categoryName)
+    {
         $categories = $this->model->select('id', $categoryName,'image')->where('deleted_status', $this->disableDeletedStatus)->paginate($this->perPage);
-        
+
         $data =[];
         foreach ($categories as $key =>  $category) {
             $data[$key]['id'] = $category->id;
             $data[$key]['categoryName'] = $category->$categoryName;
             $data[$key]['categoryLogo'] = $category->image;
-            $data[$key]['totalcontent'] = 100;
+            $data[$key]['totalContent'] = $this->getSubCategoryCount($category->id);
         }
 
         return $data;
+    }
+
+    public function getSubCategoryCount($categoryId)
+    {
+        return $this->subCategoryModel->where('category_id', $categoryId)->where('deleted_status', $this->disableDeletedStatus)->count();
     }
 }
