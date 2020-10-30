@@ -20,4 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::get('categories','CategoryController@getCategoryList');
+    Route::get('categories/{id}/subCategories','SubCategoryController@getSubCategoryList');
+
 });
