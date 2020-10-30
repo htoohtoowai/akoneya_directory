@@ -19,9 +19,5 @@ class CategoryController extends Controller
     {
         return $this->categoryRepo->getCategoryList();
     }
-
-    public function getSubcategoriesByCategoryId($categoryId)
-    {
-        return $this->categoryRepo->getSubcategoriesByCategoryId($categoryId);
-    }
+    
 }
