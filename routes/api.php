@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('zones', 'API\ZoneController@getZoneList');
+
+Route::get('zones/{zoneId}/townships', 'API\TownshipController@getByZoneId');
