@@ -1,48 +1,59 @@
 <?php
-
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\File;
 
 /**
- * Upload Base64 Image
+ * Upload File To Akoneya Media
  */
 
-if(!function_exists('base64_to_image')){
+if(!function_exists('base64ImageUploadToAkoneyaMedia')){
 
-    function base64_to_image($base64String,$prefix)
+    function base64ImageUploadToAkoneyaMedia($base64String,$directoryName)
     {
-        $photo = base64_decode($base64String);
+        $file = base64_decode($base64String);
+        $fileExtension = ".png";
+        $fileName = time().Str::random(6).$fileExtension;
+        $mediaPath = $directoryName."/".$fileName;
 
-        $photo_name= $prefix.time().Str::random(6). '.jpg';
+        if(Storage::disk('akoneya')->put($mediaPath,$file))
+        {
+            return $mediaPath;
+        }
 
-        Storage::disk('public')->put($photo_name,$photo);
-
-        return $photo_name;
-
+        return null;
     }
 }
 
 /**
- * Get Storage File
+ * Delete File From Akoneya Media
  */
 
-if(! function_exists('get_storage_file_path')) {
+if(!function_exists('deleteFileFromAkoneyaMedia')){
 
-    function get_storage_file_path($file = null)
-    {
-        return Storage::url($file);
+    function deleteFileFromAkoneyaMedia($filePath) {
+         
+        Storage::disk('akoneya')->delete($filePath);
+        
     }
 }
 
-/**
-* Check Request Auth User Id
-*
-*/
+/*
+ * Get Fiel URL from Akoneya Medai
+ */
+if(!function_exists('getFileUrlFromAkoneyaMedia')){
 
-if(!function_exists('check_auth_user_id')) {
-
-    function check_auth_user_id($authUserId,$passedId) {
-
-        return $authUserId == $passedId;
+    function getFileUrlFromAkoneyaMedia($filePath)
+    {
+         $fileUrl = Storage::disk("akoneya")->url($filePath);
+         return $fileUrl;
     }
+}
+
+if(!function_exists("str_to_24hr_format")){
+	
+	function str_to_24hr_format($value)
+	{
+		return date("Y-m-d H:i:s", strtotime($value));
+	}
 }

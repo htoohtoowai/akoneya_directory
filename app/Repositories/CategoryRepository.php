@@ -1,0 +1,56 @@
+<?php
+namespace App\Repositories;
+
+use App\Repositories\BaseRepository;
+use App\Repositories\ResponseRepository;
+use App\Http\Resources\CategoryListCollection;
+use App\Models\Category;
+use Illuminate\Http\Request;
+
+class CategoryRepository extends BaseRepository
+{
+	protected $model;
+    protected $request;
+    protected $responseRepo;
+
+	public function __construct(Category $model, Request $request, ResponseRepository $responseRepo)
+	{
+        $this->model = $model;
+        $this->request = $request;
+        $this->responseRepo = $responseRepo;
+        $this->perPage = config('enums.perPage');
+        $this->disableDeletedStatus = config('enums.disableDeletedStatus');
+    }
+    
+    public function getCategoryList()
+    {
+        if ($this->request->header('Content-Language') == 'zh'){
+            $categories = $this->categoryListByLang('category_name_zh');
+
+        }  elseif ($this->request->header('Content-Language') == 'mm'){
+            $categories = $this->categoryListByLang('category_name_mm');
+
+        } else {
+            $categories = $this->categoryListByLang('category_name');
+        }
+
+        $paginator = $this->model->where('deleted_status', $this->disableDeletedStatus)->paginate($this->perPage);
+
+        return $this->responseRepo->successResponse(new CategoryListCollection($categories, $paginator), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+    }
+
+    public function categoryListByLang($categoryName){
+        
+        $categories = $this->model->select('id', $categoryName,'image')->where('deleted_status', $this->disableDeletedStatus)->get();
+        
+        $data =[];
+        foreach ($categories as $key =>  $category) {
+            $data[$key]['id'] = $category->id;
+            $data[$key]['categoryName'] = $category->$categoryName;
+            $data[$key]['categoryLogo'] = $category->image;
+            $data[$key]['totalcontent'] = 100;
+        }
+
+        return $data;
+    }
+}
