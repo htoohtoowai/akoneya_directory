@@ -28,13 +28,12 @@ class SubCategoryTest extends TestCase
             'subcategory_name' => config('mock_data.subCategoryName'),
             'subcategory_name_mm' => config('mock_data.subCategoryName'),
             'subcategory_name_zh' => config('mock_data.subCategoryName'),
-            'service_code' => "DS001",
+            'service_code' => config('mock_data.serviceCode'),
             'category_id' => $category->id,
         ]);
 
        
         $response = $this->get("/api/categories/$category->id/subCategories");
-        // dd($response);
 
         $response->assertStatus(200);
 
