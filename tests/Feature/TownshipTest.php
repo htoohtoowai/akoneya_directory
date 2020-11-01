@@ -18,14 +18,14 @@ class TownshipTest extends TestCase
      *
      * @return void
      */
-    public function testTownshipListByZoneId()
+    public function testSubCategories()
     {
-        $township = $this->createTownship([
+        $category = $this->createTownship([
             'township_name' => "Hlaing",
             'zone_id' => config('mock_data.zone_id')
         ]);
 
-        $response = $this->get("/api/zones/$township->zone_id/townships");
+        $response = $this->get("/api/categories/$category->id/subCategories");
 
         $response->assertStatus(200);
 
