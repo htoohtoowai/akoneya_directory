@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'successMsg'  => "Success",
-    'notFoundMsg' => "No record."
+    'successMsg' => '成功',
+    'notFoundMsg' => '我不记得了'
 ];
