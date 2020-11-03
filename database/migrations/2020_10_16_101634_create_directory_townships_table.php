@@ -13,12 +13,15 @@ class CreateDirectoryTownshipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('directory_townships', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('township_name');
-            $table->unsignedBigInteger('zone_id');
-            $table->boolean('deleted_status')->default('0');
-        });
+        if (!Schema::hasTable('directory_townships')) {
+
+            Schema::create('directory_townships', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->text('township_name');
+                $table->unsignedBigInteger('zone_id');
+                $table->boolean('deleted_status')->default('0');
+            });
+        }
     }
 
     /**

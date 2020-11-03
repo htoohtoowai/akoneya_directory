@@ -4,23 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Repositories\SubcategoryRepository;
-use App\Repositories\CategoryRepository;
+use App\Repositories\SubCategoryRepository;
 
 class SubCategoryController extends Controller
 {
-    public function __construct(SubcategoryRepository $subCategoryRepo, CategoryRepository $categoryRepo)
+    public function __construct(SubCategoryRepository $subCategoryRepo)
     {
         $this->subCategoryRepo = $subCategoryRepo;
-        $this->categoryRepo = $categoryRepo;
-       
-        $this->itemPerPage = config('enums.itemPerPage');
+
     }
 
-    public function index(DirectorySubcategoryFilter $filter)
+    public function getSubCategoryList(Request $request, $categoryId)
     {
-        $subCategoryInfos = $this->subCategoryRepo->getSubCategory($filter,$this->itemPerPage);
-        $directoryCategory = $this->directoryCategoryRepo->getDirectoryCategory();
-        return view('directory.directory_subcategories.index',compact('subCategoryInfos','directoryCategory'));
+        return $this->subCategoryRepo->getSubCategory($request, $categoryId);
     }
 }

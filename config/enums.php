@@ -2,7 +2,8 @@
 
 return [
     'perPage'=> 10,
-    'disableDeletedStatus'=> 0
+    'enablePublishStatus' => 1,
+    'disableDeletedStatus' => 0,
 ];
 
 
