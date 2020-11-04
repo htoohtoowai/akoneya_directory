@@ -12,4 +12,5 @@ return [
     'subCategoryName' => "Hotel",
     'categoryId' => 1,
     'serviceCode' => "DS001",
+    'colorCode'=>"#00FFFF",
 ];

@@ -20,6 +20,8 @@ class CreateDirectoryCategoriesTable extends Migration
                 $table->string('category_name_mm');
                 $table->string('category_name_zh')->nullable();
                 $table->string('image')->nullable();
+                $table->string('primary_color_code');
+                $table->string('secondary_color_code');
                 $table->boolean('deleted_status')->default('0');
                 $table->timestamps();
             });
