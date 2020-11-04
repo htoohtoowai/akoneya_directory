@@ -26,20 +26,20 @@ class SubCategoryRepository extends BaseRepository
 
     public function getSubCategory($request, $categoryId)
     {
+        $subCategoryName = "subcategory_name";
+
         if ($request->header('Content-Language') == 'zh'){
-            $categories = $this->subCategoryListByLang($categoryId,'subcategory_name_zh');
+            $subCategoryName = 'subcategory_name_zh';
 
         }  elseif ($request->header('Content-Language') == 'mm'){
-            $categories = $this->subCategoryListByLang($categoryId,'subcategory_name_mm');
+            $subCategoryName = 'subcategory_name_mm';
 
-        } else {
-            $categories = $this->subCategoryListByLang($categoryId,'subcategory_name');
         }
 
-        $paginator = $this->subCategory->where('deleted_status', $this->disableDeletedStatus)
-                                       ->paginate($this->perPage);
+        $subCategories = $this->subCategoryListByLang($categoryId,$subCategoryName);
+        $data = (new SubCategoryListCollection($subCategories))->subCategoryName($subCategoryName);
 
-        return $this->responseRepo->successResponse(new SubCategoryListCollection($categories, $paginator), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+        return $this->responseRepo->successResponse($data, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
     public function subCategoryListByLang($categoryId,$categoryName){
@@ -47,15 +47,9 @@ class SubCategoryRepository extends BaseRepository
         $subCategories = $this->subCategory->select('id', $categoryName,'service_code')
                                             ->where('deleted_status', $this->disableDeletedStatus)
                                             ->where('category_id', $categoryId)
+                                            ->orderBy($categoryName)
                                             ->paginate($this->perPage);
-        
-        $data =[];
-        foreach ($subCategories as $key =>  $category) {
-            $data[$key]['id'] = $category->id;
-            $data[$key]['categoryName'] = $category->$categoryName;
-            $data[$key]['totalContact'] = $this->serviceRepo->checkServiceModel($category->service_code)->count();
-        }
 
-        return $data;
+        return $subCategories;
     }
 }

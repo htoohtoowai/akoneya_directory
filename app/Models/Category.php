@@ -14,4 +14,14 @@ class Category extends Model
     {
         $filters->apply($query);
     }
+
+    public function subCategories()
+    {
+    	return $this->hasMany(SubCategory::class,'category_id','id');
+    }
+
+    public function subCategoryCount()
+    {
+    	return $this->subCategories()->where('deleted_status', config('enums.disableDeletedStatus'))->count();
+    }
 }

@@ -15,5 +15,13 @@ class SubCategory extends Model
         $filters->apply($query);
     }
 
+    public function directoryServiceCount()
+    {
+    	$directoryService = config("directory_services.codes.$this->service_code");
+    	$serviceModelClassName = $directoryService["model"];
+        $serviceModel = new $serviceModelClassName();
+    	
+    	return $serviceModel->where('deleted_status', config('enums.disableDeletedStatus'))->count();
+    }
 }
 

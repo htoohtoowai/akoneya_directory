@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\BaseRepository;
 use App\Repositories\ResponseRepository;
-use App\Http\Resources\ServiceListCollection;
+use App\Http\Resources\ServiceResourceCollection;
 use App\Models\SubCategory;
 use App\Models\Hotel;
 use App\Models\HotelAgency;
@@ -49,8 +49,8 @@ class ServiceRepository extends BaseRepository
 		$subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
         
-		$serviceInformation = $serviceModel->filter($filter)->paginate($perPage);
-		$data = new ServiceListCollection($serviceInformation);
+		$serviceInformation = $serviceModel->filter($filter)->orderBy('name')->paginate($perPage);
+		$data = new ServiceResourceCollection($serviceInformation);
 
 		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, $this->responseRepo->successMsg);
 	}
