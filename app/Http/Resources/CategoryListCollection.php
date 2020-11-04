@@ -7,37 +7,48 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class CategoryListCollection extends ResourceCollection
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     private $pagination, $nextPage;
 
-    public function __construct($resource, $paginator)
+    protected $categoryName;
+
+    public function __construct($resource)
     {   
-        if(($paginator->currentPage() + 1) <= $paginator->lastPage()){
-            $this->nextPage = $paginator->currentPage() + 1;
+        if(($resource->currentPage() + 1) <= $resource->lastPage()){
+            $this->nextPage = $resource->currentPage() + 1;
         }
         else{
             $this->nextPage = null;
         }
 
         $this->pagination = [
-            'perPage' => $paginator->perPage(),
-            'currentPage' => $paginator->currentPage(),
+            'perPage' => $resource->perPage(),
+            'currentPage' => $resource->currentPage(),
             'nextPage' => $this->nextPage
         ];
 
+        $resource = $resource->getCollection();
+
         parent::__construct($resource);
+    }
+
+    public function categoryName($value){
+        $this->categoryName = $value;
+        return $this;
     }
 
     public function toArray($request)
     {
         return [
-                'categories' => $this->collection,
-                'pagination' => $this->pagination
-            ];    
+            'categories' => $this->collection->map(function(CategoryList $resource) use($request){
+                    return $resource->categoryName($this->categoryName)->toArray($request);
+            }),
+            'pagination' => $this->pagination
+        ];    
     }
     
 }

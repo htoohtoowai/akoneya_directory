@@ -27,19 +27,18 @@ class CategoryRepository extends BaseRepository
     
     public function getCategoryList()
     {
+        $categoryName = "category_name";
+
         if ($this->request->header('Content-Language') == 'zh'){
-            $categories = $this->categoryListByLang('category_name_zh');
+            $categoryName = 'category_name_zh';
 
         }  elseif ($this->request->header('Content-Language') == 'mm'){
-            $categories = $this->categoryListByLang('category_name_mm');
-
-        } else {
-            $categories = $this->categoryListByLang('category_name');
+            $categoryName = 'category_name_mm';
         }
 
-        $paginator = $this->model->where('deleted_status', $this->disableDeletedStatus)->paginate($this->perPage);
-
-        return $this->responseRepo->successResponse(new CategoryListCollection($categories, $paginator), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+        $categories = $this->categoryListByLang($categoryName);
+        $data = (new CategoryListCollection($categories))->categoryName($categoryName);
+        return $this->responseRepo->successResponse($data, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
     public function categoryListByLang($categoryName)
@@ -49,19 +48,6 @@ class CategoryRepository extends BaseRepository
                         ->orderBy($categoryName)
                         ->paginate($this->perPage);
 
-        $data =[];
-        foreach ($categories as $key =>  $category) {
-            $data[$key]['id'] = $category->id;
-            $data[$key]['name'] = $category->$categoryName;
-            $data[$key]['logo'] = $category->image;
-            $data[$key]['totalContent'] = $this->getSubCategoryCount($category->id);
-        }
-
-        return $data;
-    }
-
-    public function getSubCategoryCount($categoryId)
-    {
-        return $this->subCategoryModel->where('category_id', $categoryId)->where('deleted_status', $this->disableDeletedStatus)->count();
+        return $categories;
     }
 }
