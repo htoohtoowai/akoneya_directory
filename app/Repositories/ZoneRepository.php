@@ -16,7 +16,7 @@ class ZoneRepository extends BaseRepository
 
 	public function getZoneList()
 	{
-		$data['zones'] = ZoneListResource::collection($this->zones);
+		$data['zones'] = ZoneListResource::collection($this->zones)->sortBy('name')->values();
 		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, $this->responseRepo->successMsg);
 	}
 }

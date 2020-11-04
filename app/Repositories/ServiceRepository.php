@@ -49,7 +49,7 @@ class ServiceRepository extends BaseRepository
 		$subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
         
-		$serviceInformation = $serviceModel->filter($filter)->paginate($perPage);
+		$serviceInformation = $serviceModel->filter($filter)->orderBy('name')->paginate($perPage);
 		$data = new ServiceListCollection($serviceInformation);
 
 		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, $this->responseRepo->successMsg);

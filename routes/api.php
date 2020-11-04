@@ -18,9 +18,7 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::get('categories','CategoryController@getCategoryList');
     Route::get('categories/{id}/subCategories','SubCategoryController@getSubCategoryList');
 	Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
-
     Route::get('zones', 'ZoneController@getZoneList');
-
 	Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
 
 

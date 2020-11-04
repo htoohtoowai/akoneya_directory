@@ -36,7 +36,7 @@ class SubCategoryRepository extends BaseRepository
             $categories = $this->subCategoryListByLang($categoryId,'subcategory_name');
         }
 
-        $paginator = $this->subCategory->where('deleted_status', $this->disableDeletedStatus)
+        $paginator = $this->subCategory->where('deleted_status', $this->disableDeletedStatus)->orderBy("subcategory_name")
                                        ->paginate($this->perPage);
 
         return $this->responseRepo->successResponse(new SubCategoryListCollection($categories, $paginator), $this->responseRepo->successStatusCode, trans('message.successMsg'));
@@ -47,12 +47,13 @@ class SubCategoryRepository extends BaseRepository
         $subCategories = $this->subCategory->select('id', $categoryName,'service_code')
                                             ->where('deleted_status', $this->disableDeletedStatus)
                                             ->where('category_id', $categoryId)
+                                            ->orderBy($categoryName)
                                             ->paginate($this->perPage);
         
         $data =[];
         foreach ($subCategories as $key =>  $category) {
             $data[$key]['id'] = $category->id;
-            $data[$key]['categoryName'] = $category->$categoryName;
+            $data[$key]['name'] = $category->$categoryName;
             $data[$key]['totalContact'] = $this->serviceRepo->checkServiceModel($category->service_code)->count();
         }
 

@@ -18,7 +18,7 @@ class TownshipRepository extends BaseRepository
 
 	public function getByZoneId($zoneId)
 	{
-		$townships = $this->townshipModel->where('zone_id',$zoneId)->where('deleted_status', $this->disableDeletedStatus)->get();
+		$townships = $this->townshipModel->where('zone_id',$zoneId)->where('deleted_status', $this->disableDeletedStatus)->orderBy('township_name')->get();
 		
 		$data['townships'] = TownshipListResource::collection($townships);
 

@@ -44,13 +44,16 @@ class CategoryRepository extends BaseRepository
 
     public function categoryListByLang($categoryName)
     {
-        $categories = $this->model->select('id', $categoryName,'image')->where('deleted_status', $this->disableDeletedStatus)->paginate($this->perPage);
+        $categories = $this->model->select('id', $categoryName,'image')
+                        ->where('deleted_status', $this->disableDeletedStatus)
+                        ->orderBy($categoryName)
+                        ->paginate($this->perPage);
 
         $data =[];
         foreach ($categories as $key =>  $category) {
             $data[$key]['id'] = $category->id;
-            $data[$key]['categoryName'] = $category->$categoryName;
-            $data[$key]['categoryLogo'] = $category->image;
+            $data[$key]['name'] = $category->$categoryName;
+            $data[$key]['logo'] = $category->image;
             $data[$key]['totalContent'] = $this->getSubCategoryCount($category->id);
         }
 
