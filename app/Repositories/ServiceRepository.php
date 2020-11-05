@@ -10,13 +10,16 @@ use App\Models\Hotel;
 use App\Models\HotelAgency;
 use App\Models\PrivateHospital;
 use App\Models\PublicHospital;
+use App\Models\Bank;
+use App\Models\Microfinance;
 use App\Exceptions\NotFoundException;
 
 class ServiceRepository extends BaseRepository
 {
 	public function __construct(ResponseRepository $responseRepo)
 	{
-		$this->responseRepo = $responseRepo;
+        $this->responseRepo = $responseRepo;
+        $this->disableDeletedStatus = config('enums.disableDeletedStatus');
 		$this->directoryServiceCodes = config('directory_services.codes');
 	}
 
@@ -25,7 +28,7 @@ class ServiceRepository extends BaseRepository
         $subCategory = SubCategory::find($subCategoryId);
         
         if (!$subCategory) {
-            throw new NotFoundException($this->responseRepo->notFoundMsg);
+            throw new NotFoundException(trans('message.notFoundMsg'));
         }
         
         return $subCategory;
@@ -38,7 +41,7 @@ class ServiceRepository extends BaseRepository
         $serviceModel = new $serviceModelClassName();
 
         if (!class_exists($serviceModelClassName)) {
-            throw new NotFoundException($this->responseRepo->notFoundMsg);
+            throw new NotFoundException(trans('message.notFoundMsg'));
         }
 
         return $serviceModel;
@@ -49,9 +52,12 @@ class ServiceRepository extends BaseRepository
 		$subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
         
-		$serviceInformation = $serviceModel->filter($filter)->orderBy('name')->paginate($perPage);
+        $serviceInformation = $serviceModel->filter($filter)
+                                            ->where('deleted_status', $this->disableDeletedStatus)
+                                            ->orderBy('name')->paginate($perPage);
+
 		$data = new ServiceResourceCollection($serviceInformation);
 
-		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, $this->responseRepo->successMsg);
+		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, trans('message.successMsg'));
 	}
 }
