@@ -25,6 +25,8 @@ class CategoryList extends JsonResource
             'id' => $this->id,
             'name' => $this->{$this->categoryName},
             'logo' => $this->image ? getFileUrlFromAkoneyaMedia($this->image) : null,
+            'primaryColor' => $this->primary_color_code,
+            'secondaryColor' => $this->secondary_color_code,
             'totalContent' => $this->subCategoryCount()
         ];
     }

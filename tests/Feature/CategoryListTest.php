@@ -16,20 +16,20 @@ class CategoryListTest extends TestCase
      */
     public function createCategory(){
 
-        $category = Category::create([
-            'category_name' => config('mock_data.nameEn'),
-            'category_name_mm' => config('mock_data.nameMm'),
-            'category_name_zh' => config('mock_data.nameZh'),
-            'image' => config('mock_data.fakeLogo'),
-            'deleted_status' => config('mock_data.deleteStatus'),
-        ]);
-
-        return $category;
+        return Category::create([
+                'category_name' => config('mock_data.nameEn'),
+                'category_name_mm' => config('mock_data.nameMm'),
+                'category_name_zh' => config('mock_data.nameZh'),
+                'image' => config('mock_data.fakeLogo'),
+                'primary_color_code' => config('mock_data.colorCode'),
+                'secondary_color_code' => config('mock_data.colorCode'),
+                'deleted_status' => config('mock_data.deleteStatus'),
+            ]);
     }
 
     public function testGetCategoryListSuccessfully()
     {
-        $category = $this->createCategory();
+        $this->createCategory();
 
         $response = $this->get('api/categories');
 

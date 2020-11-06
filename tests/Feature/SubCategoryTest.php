@@ -22,6 +22,8 @@ class SubCategoryTest extends TestCase
             'category_name' => config('mock_data.categoryName'),
             'category_name_mm' => config('mock_data.categoryName'),
             'category_name_zh' => config('mock_data.categoryName'),
+            'primary_color_code' => config('mock_data.colorCode'),
+            'secondary_color_code' => config('mock_data.colorCode'),
         ]);
 
         SubCategory::create([
