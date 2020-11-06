@@ -24,7 +24,6 @@ class SubCategoryList extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->{$this->subCategoryName},
-            'logo' => $this->image,
             'totalContent' => $this->directoryServiceCount()
         ];
     }
