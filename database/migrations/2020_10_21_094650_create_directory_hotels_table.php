@@ -13,15 +13,17 @@ class CreateDirectoryHotelsTable extends Migration
      */
     public function up()
      {
-         Schema::create('directory_hotels', function (Blueprint $table) {
-             $table->bigIncrements('id');
-             $table->string('name');
-             $table->unsignedBigInteger('township_id')->nullable();
-             $table->unsignedInteger('zone_id')->nullable();
-             $table->string('address', 225);
-             $table->string('phone',15);
-             $table->boolean('deleted_status')->default('0');
-         });
+        if (!Schema::hasTable('directory_hotels')) {
+            Schema::create('directory_hotels', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->unsignedBigInteger('township_id')->nullable();
+                $table->unsignedInteger('zone_id')->nullable();
+                $table->string('address', 225);
+                $table->string('phone',255);
+                $table->boolean('deleted_status')->default('0');
+            });
+        }
      }
 
     /**

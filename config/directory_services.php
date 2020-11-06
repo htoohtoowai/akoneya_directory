@@ -17,6 +17,14 @@ return [
 		"DS004" => [
 			"name" => "Public Hospital",
 			"model" => "App\Models\PublicHospital"
+		],
+		"DS005" => [
+			"name" => "Bank",
+			"model" => "App\Models\Bank"
+		],
+		"DS006" => [
+			"name" => "Microfinance",
+			"model" => "App\Models\Microfinance"
 		]
 	]
 ];
