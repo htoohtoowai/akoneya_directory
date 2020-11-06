@@ -13,4 +13,6 @@ return [
     'categoryId' => 1,
     'serviceCode' => "DS001",
     'colorCode'=>"#00FFFF",
+    'date'=>"2020-10-14 11:10:41",
+    'description'=>"Diwali/Deepavali"
 ];

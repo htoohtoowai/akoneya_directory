@@ -21,6 +21,6 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::get('zones', 'ZoneController@getZoneList');
 	Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
 
-	Route::get('holiday/years/{year}', 'HolidayController@getHolidays');
+	Route::get('holidays', 'HolidayController@getHolidays');
 
 });
