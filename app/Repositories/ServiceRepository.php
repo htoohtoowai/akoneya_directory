@@ -56,7 +56,9 @@ class ServiceRepository extends BaseRepository
                                             ->where('deleted_status', $this->disableDeletedStatus)
                                             ->orderBy('name')->paginate($perPage);
 
-		$data = new ServiceResourceCollection($serviceInformation);
+        $serviceInformationCount = $serviceInformation->total();
+
+		$data = new ServiceResourceCollection($serviceInformation,$serviceInformationCount);
 
 		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, trans('message.successMsg'));
 	}
