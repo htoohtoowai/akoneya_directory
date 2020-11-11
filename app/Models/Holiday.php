@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends Model
 {
-    //
+    protected $table = 'holidays';
+
+    protected $guarded = [];
+
+    public $timestamps = false;
+
 }

@@ -13,9 +13,8 @@ class HolidayController extends Controller
         $this->holidayRepo = $holidayRepo;
       
     }
-    public function getHolidays($year)
+    public function getHolidays(Request $request)
     {
-        // dd($year);
-    	return $this->holidayRepo->getHolidayList($year);
+    	return $this->holidayRepo->getHolidayList($request->year);
     }
 }
