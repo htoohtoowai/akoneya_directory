@@ -22,13 +22,25 @@ class HolidayRepository extends BaseRepository
     }
     
     public function getHolidayList($year,$month)
-    {
-        $holidays = $this->model->select('date','description')
-                        ->whereYear('date',$year)
-                        ->whereMonth('date',$month)
-                        ->orderBy('date','ASC')
-                        ->get();
+    {   
+        if($year && $month){
+            $holidays = $this->model->select('date','description')
+                                    ->whereYear('date',$year)
+                                    ->whereMonth('date',$month)
+                                    ->orderBy('date','ASC')
+                                    ->get();
 
+        }
+        elseif($year){
+            $holidays = $this->model->select('date','description')
+                                    ->whereYear('date',$year)
+                                    ->orderBy('date','ASC')
+                                    ->get();
+        }
+        else{
+            $holidays=[];
+        }
+       
         $data = HolidayResource::collection($holidays);
 
         return $this->responseRepo->successResponse(["holidays"=>$data], $this->responseRepo->successStatusCode, trans('message.successMsg'));
