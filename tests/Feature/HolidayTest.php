@@ -22,18 +22,13 @@ class HolidayTest extends TestCase
             'description' => config('mock_data.description'),
         ]);
 
-        $response = $this->get("/api/holidays?year=2020&page=1");
+        $response = $this->get("/api/holidays?year=2020&year=1");
 
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
             "result" => [
-                "holidays",
-                "pagination" => [
-                    "perPage",
-                    "currentPage",
-                    "nextPage"
-                ]
+                "holidays"
             ],
             "statusCode",
             "message",
