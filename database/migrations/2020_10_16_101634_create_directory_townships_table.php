@@ -18,7 +18,7 @@ class CreateDirectoryTownshipsTable extends Migration
             Schema::create('directory_townships', function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->text('township_name');
-                $table->unsignedBigInteger('zone_id');
+                $table->unsignedInteger('zone_id');
                 $table->boolean('deleted_status')->default('0');
             });
         }
