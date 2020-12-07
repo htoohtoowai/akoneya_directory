@@ -18,18 +18,20 @@ class SubCategoryTest extends TestCase
      */
     public function testSubCategories()
     {
+        $categoryName = config('mock_data.categoryName');
         $category = Category::create([
-            'category_name' => config('mock_data.categoryName'),
-            'category_name_mm' => config('mock_data.categoryName'),
-            'category_name_zh' => config('mock_data.categoryName'),
+            'category_name' => $categoryName,
+            'category_name_mm' => $categoryName,
+            'category_name_zh' => $categoryName,
             'primary_color_code' => config('mock_data.colorCode'),
             'secondary_color_code' => config('mock_data.colorCode'),
         ]);
 
+        $subCategoryName = config('mock_data.subCategoryName');
         SubCategory::create([
-            'subcategory_name' => config('mock_data.subCategoryName'),
-            'subcategory_name_mm' => config('mock_data.subCategoryName'),
-            'subcategory_name_zh' => config('mock_data.subCategoryName'),
+            'subcategory_name' => $subCategoryName,
+            'subcategory_name_mm' => $subCategoryName,
+            'subcategory_name_zh' => $subCategoryName,
             'service_code' => config('mock_data.serviceCode'),
             'category_id' => $category->id,
         ]);
