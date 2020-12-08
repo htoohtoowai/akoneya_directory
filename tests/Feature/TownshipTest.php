@@ -11,7 +11,7 @@ class TownshipTest extends TestCase
 {
     public function createTownship($data)
     {
-        return Township::create($data);
+        Township::create($data);
     }
     /**
      * A basic feature test example.
@@ -20,7 +20,7 @@ class TownshipTest extends TestCase
      */
     public function testSubCategories()
     {
-        $township = $this->createTownship([
+        $this->createTownship([
             'township_name' => "Hlaing",
             'zone_id' => config('mock_data.zone_id')
         ]);

@@ -44,12 +44,10 @@ class SubCategoryRepository extends BaseRepository
 
     public function subCategoryListByLang($categoryId,$categoryName){
         
-        $subCategories = $this->subCategory->select('id', $categoryName,'service_code')
+        return $this->subCategory->select('id', $categoryName,'service_code')
                                             ->where('deleted_status', $this->disableDeletedStatus)
                                             ->where('category_id', $categoryId)
                                             ->orderBy($categoryName)
                                             ->paginate($this->perPage);
-
-        return $subCategories;
     }
 }
