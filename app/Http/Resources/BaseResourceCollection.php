@@ -20,8 +20,8 @@ trait BaseResourceCollection
             'currentPage' => $resource->currentPage(),
             'nextPage' => $this->nextPage
         ];
-
-        $resource = $resource->getCollection();
+       
+        // $resource = $resource->getCollection();
 
         parent::__construct($resource);
     }

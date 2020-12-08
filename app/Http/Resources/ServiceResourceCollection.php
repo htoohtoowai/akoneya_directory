@@ -13,12 +13,11 @@ class ServiceResourceCollection extends ResourceCollection
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    private $resultCount;
 
     public function toArray($request)
     {
         return [
-            'resultCount' => $this->resultCount,
+            'resultCount' => $this->total(),
             'data' => $this->collection,
             'pagination' => $this->pagination
         ];    
