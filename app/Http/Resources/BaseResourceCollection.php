@@ -6,32 +6,17 @@ trait BaseResourceCollection
 {
     private $pagination;
     private $nextPage;
+    private $totalResultCount;
 
-    public function __construct($resource, $nextId)
+    public function __construct($resource, $nextId, $totalResultCount = 0)
     {
-        // if(($resource->currentPage() + 1) <= $resource->lastPage()){
-        //     $this->nextPage = $resource->currentPage() + 1;
-        // }
-        // else{
-        //     $this->nextPage = null;
-        // }
-
-        // $this->pagination = [
-        //     'perPage' => $resource->perPage(),
-        //     'currentPage' => $resource->currentPage(),
-        //     'nextPage' => $this->nextPage
-        // ];
-       
-        // // $resource = $resource->getCollection();
-
-        // parent::__construct($resource);
         $this->nextId = $nextId;
-    
+        $this->totalResultCount = $totalResultCount;
+
         $this->pagination = [
             'nextId' => $this->nextId
         ];
 
         parent::__construct($resource);
     }
-    
 }

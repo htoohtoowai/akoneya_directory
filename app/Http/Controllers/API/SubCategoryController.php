@@ -11,7 +11,6 @@ class SubCategoryController extends Controller
     public function __construct(SubCategoryRepository $subCategoryRepo)
     {
         $this->subCategoryRepo = $subCategoryRepo;
-
     }
 
     public function getSubCategoryList(Request $request, $categoryId)

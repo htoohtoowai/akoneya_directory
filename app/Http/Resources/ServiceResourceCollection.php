@@ -11,7 +11,7 @@ class ServiceResourceCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'resultCount' => count($this->collection),
+            'resultCount' => $this->totalResultCount,
             'data' => $this->collection,
             'pagination' => $this->pagination
         ];

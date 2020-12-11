@@ -21,8 +21,7 @@ class ServiceRepository extends BaseRepository
         $this->responseRepo = $responseRepo;
         $this->disableDeletedStatus = config('enums.disableDeletedStatus');
         $this->directoryServiceCodes = config('directory_services.codes');
-        // $this->perPage = config('enums.perPage');
-        $this->perPage = 5;
+        $this->perPage = config('enums.perPage');
         $this->nextId = null;
     }
 
@@ -48,30 +47,31 @@ class ServiceRepository extends BaseRepository
 
     public function getServiceList($subCategoryId, $filter, $nextId)
     {
+        $totalResultCount = 0;
         $subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
         if ($nextId == "" || $nextId == 'null') {
             $serviceInformation = [];
         } else {
+            $totalResultCount = $serviceModel->filter($filter)->count();
             $serviceInformation = $serviceModel->filter($filter)
-                                            ->where(function ($q) {
-                                                if (request()->nextId !=0) {
-                                                    $q->where('directory_hotels.id', '<=', request()->nextId);
-                                                }
-                                            })
-                                            ->where('deleted_status', $this->disableDeletedStatus)
-                                            ->orderBy('name')
-                                            ->limit($this->perPage+1)
-                                            ->get();
-           
-            $totalCount = $serviceInformation->count();
-            if ($totalCount > $this->perPage) {
+                                                ->where(function ($q) use ($nextId) {
+                                                    if ($nextId !=0) {
+                                                        $q->where('directory_hotels.id', '<=', $nextId);
+                                                    }
+                                                })
+                                                ->orderBy('id', 'DESC')
+                                                ->limit($this->perPage+1)
+                                                ->where('deleted_status', $this->disableDeletedStatus)
+                                                ->get();
+                                                        
+            $paginationCount = $serviceInformation->count();
+            if ($paginationCount > $this->perPage) {
                 $this->nextId  = $serviceInformation[$this->perPage]->id;
            
-                unset($serviceInformation[$totalCount - 1]);
+                unset($serviceInformation[$paginationCount - 1]);
             }
         }
-        
-        return $this->responseRepo->successResponse(new ServiceResourceCollection($serviceInformation, $this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+        return $this->responseRepo->successResponse(new ServiceResourceCollection($serviceInformation, $this->nextId, $totalResultCount), $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 }
