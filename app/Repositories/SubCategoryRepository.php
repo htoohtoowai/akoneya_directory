@@ -40,20 +40,19 @@ class SubCategoryRepository extends BaseRepository
 
     public function subCategoryListByLang($categoryId, $categoryName, $request)
     {
-        if ($request->nextId == "" || $request->nextId == 'null') {
-            $subCategories = [];
-        } else {
-            $subCategories = $this->subCategory->select('id', $categoryName, 'service_code')
-                                            ->where(function ($q) use ($request) {
-                                                if ($request->nextId !=0) {
-                                                    $q->where('directory_subcategories.id', '<=', $request->nextId);
-                                                }
-                                            })
+        $subCategories = [];
+        $subCategoryQuery = $this->subCategory->select('id', $categoryName, 'service_code')
                                             ->where('deleted_status', $this->disableDeletedStatus)
-                                            ->where('category_id', $categoryId)
-                                            ->orderBy('id', 'DESC')
-                                            ->limit($this->perPage+1)
-                                            ->get();
+                                            ->where('category_id', $categoryId);
+
+        if ($request->nextId != "" && $request->nextId != 'null') {
+            if ($request->nextId != 0) {
+                $nextData = $this->subCategory->find($request->nextId);
+                if ($nextData) {
+                    $subCategories =$subCategoryQuery->where($categoryName, '>=', $nextData->$categoryName);
+                }
+            }
+            $subCategories = $subCategoryQuery->orderBy($categoryName)->limit($this->perPage+1)->get();
             $paginationCount = $subCategories->count();
             if ($paginationCount > $this->perPage) {
                 $this->nextId  = $subCategories[$this->perPage]->id;

@@ -48,30 +48,34 @@ class ServiceRepository extends BaseRepository
     public function getServiceList($subCategoryId, $filter, $nextId)
     {
         $totalResultCount = 0;
+        $serviceInformation = [];
         $subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
-        if ($nextId == "" || $nextId == 'null') {
-            $serviceInformation = [];
-        } else {
+        
+        if ($nextId != ""  && $nextId != 'null') {
             $totalResultCount = $serviceModel->filter($filter)->count();
-            $serviceInformation = $serviceModel->filter($filter)
-                                                ->where(function ($q) use ($nextId) {
-                                                    if ($nextId !=0) {
-                                                        $q->where('directory_hotels.id', '<=', $nextId);
-                                                    }
-                                                })
-                                                ->orderBy('id', 'DESC')
-                                                ->limit($this->perPage+1)
-                                                ->where('deleted_status', $this->disableDeletedStatus)
-                                                ->get();
-                                                        
+            $serviceInformationQuery = $serviceModel->filter($filter);
+
+            if ($nextId != 0) {
+                $nextData = $serviceModel->find($nextId);
+                if ($nextData) {
+                    $serviceInformationQuery = $serviceInformationQuery->where('name', ">=", $nextData->name);
+                }
+            }
+
+            $serviceInformation = $serviceInformationQuery->orderBy('name')
+                                    ->limit($this->perPage+1)
+                                    ->where('deleted_status', $this->disableDeletedStatus)
+                                    ->get();
+
             $paginationCount = $serviceInformation->count();
             if ($paginationCount > $this->perPage) {
                 $this->nextId  = $serviceInformation[$this->perPage]->id;
-           
+                
                 unset($serviceInformation[$paginationCount - 1]);
             }
         }
+        
         return $this->responseRepo->successResponse(new ServiceResourceCollection($serviceInformation, $this->nextId, $totalResultCount), $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 }

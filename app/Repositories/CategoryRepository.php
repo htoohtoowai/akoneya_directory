@@ -43,19 +43,17 @@ class CategoryRepository extends BaseRepository
 
     public function categoryListByLang($categoryName, $request)
     {
-        if ($request->nextId == "" || $request->nextId == 'null') {
-            $categories = [];
-        } else {
-            $categories = $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')
-                                        ->where(function ($q) use ($request) {
-                                            if ($request->nextId !=0) {
-                                                $q->where('directory_categories.id', '<=', $request->nextId);
-                                            }
-                                        })
-                                        ->where('deleted_status', $this->disableDeletedStatus)
-                                        ->orderBy('id', 'DESC')
-                                        ->limit($this->perPage+1)
-                                        ->get();
+        $categories = [];
+        $categoryQuery =  $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')->where('deleted_status', $this->disableDeletedStatus);
+
+        if ($request->nextId != "" && $request->nextId != 'null') {
+            if ($request->nextId != 0) {
+                $nextData = $this->model->find($request->nextId);
+                if ($nextData) {
+                    $categories = $categoryQuery->where($categoryName, '>=', $nextData->$categoryName);
+                }
+            }
+            $categories = $categoryQuery->orderBy($categoryName)->limit($this->perPage+1)->get();
             $paginationCount = $categories->count();
             if ($paginationCount > $this->perPage) {
                 $this->nextId  = $categories[$this->perPage]->id;
@@ -63,6 +61,7 @@ class CategoryRepository extends BaseRepository
                 unset($categories[$paginationCount - 1]);
             }
         }
+
         return $categories;
     }
 }
