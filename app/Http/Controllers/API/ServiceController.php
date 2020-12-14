@@ -9,15 +9,15 @@ use App\Filters\DirectoryServiceFilter;
 
 class ServiceController extends Controller
 {
-	public function __construct(ServiceRepository $serviceRepo,DirectoryServiceFilter $serviceFilter)
+    public function __construct(ServiceRepository $serviceRepo, DirectoryServiceFilter $serviceFilter)
     {
         $this->serviceRepo = $serviceRepo;
         $this->serviceFilter = $serviceFilter;
-        $this->perPage = 10;
+       
     }
 
-    public function getServiceList($subCategoryId,Request $request)
+    public function getServiceList($subCategoryId, Request $request)
     {
-    	return $this->serviceRepo->getServiceList($subCategoryId,$this->serviceFilter,$this->perPage);
+        return $this->serviceRepo->getServiceList($subCategoryId, $this->serviceFilter, $request->nextId);
     }
 }

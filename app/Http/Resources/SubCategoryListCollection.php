@@ -10,7 +10,8 @@ class SubCategoryListCollection extends ResourceCollection
 
     protected $categoryName;
 
-    public function subCategoryName($value){
+    public function subCategoryName($value)
+    {
         $this->subCategoryName = $value;
         return $this;
     }
@@ -18,10 +19,10 @@ class SubCategoryListCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'subCategories' => $this->collection->map(function(SubCategoryList $resource) use($request){
-                    return $resource->subCategoryName($this->subCategoryName)->toArray($request);
+            'subCategories' => $this->collection->map(function (SubCategoryList $resource) use ($request) {
+                return $resource->subCategoryName($this->subCategoryName)->toArray($request);
             }),
             'pagination' => $this->pagination
-        ];    
+        ];
     }
 }

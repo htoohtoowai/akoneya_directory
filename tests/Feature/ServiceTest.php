@@ -26,18 +26,17 @@ class ServiceTest extends TestCase
             'category_id' => config('mock_data.categoryId'),
             'service_code' => config('mock_data.serviceCode')
         ]);
-
+       
         $response = $this->get("/api/subcategories/$subCategory->id/services");
-
+       
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
             "result" => [
+                "resultCount",
                 "data",
                 "pagination" => [
-                    "perPage",
-                    "currentPage",
-                    "nextPage"
+                    "nextId"
                 ]
             ],
             "statusCode",

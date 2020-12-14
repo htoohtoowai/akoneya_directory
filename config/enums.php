@@ -5,5 +5,3 @@ return [
     'enablePublishStatus' => 1,
     'disableDeletedStatus' => 0,
 ];
-
-

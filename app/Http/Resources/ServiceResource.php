@@ -18,7 +18,7 @@ class ServiceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'address' => $this->address,
-            'phone' => explode(",",$this->phone)
+            'phone' => explode(",", $this->phone)
         ];
     }
 }

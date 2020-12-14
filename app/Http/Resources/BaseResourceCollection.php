@@ -4,24 +4,18 @@ namespace App\Http\Resources;
 
 trait BaseResourceCollection
 {
-    private $pagination, $nextPage;
+    private $pagination;
+    private $nextPage;
+    private $totalResultCount;
 
-    public function __construct($resource)
-    {   
-        if(($resource->currentPage() + 1) <= $resource->lastPage()){
-            $this->nextPage = $resource->currentPage() + 1;
-        }
-        else{
-            $this->nextPage = null;
-        }
+    public function __construct($resource, $nextId, $totalResultCount = 0)
+    {
+        $this->nextId = $nextId;
+        $this->totalResultCount = $totalResultCount;
 
         $this->pagination = [
-            'perPage' => $resource->perPage(),
-            'currentPage' => $resource->currentPage(),
-            'nextPage' => $this->nextPage
+            'nextId' => $this->nextId
         ];
-       
-        // $resource = $resource->getCollection();
 
         parent::__construct($resource);
     }
