@@ -8,17 +8,10 @@ use Tests\TestCase;
 
 class ZoneTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testZoneList()
+    public function testZoneListSuccessfully()
     {
         $response = $this->get('/api/zones');
-
         $response->assertStatus(200);
-
         $response->assertJsonStructure([
             "result" => [
                 "zones"
@@ -28,6 +21,23 @@ class ZoneTest extends TestCase
         ]);
 
         $response->assertJson([
+            "result" => [
+                "zones" => [
+                    [
+                        "id" => config('zones.zoneSelections.1.id'),
+                        "name" => config('zones.zoneSelections.1.name')
+                    ],
+                    [
+                        "id" => config('zones.zoneSelections.2.id'),
+                        "name" => config('zones.zoneSelections.2.name')
+                    ],
+                    [
+                        "id" => config('zones.zoneSelections.3.id'),
+                        "name" => config('zones.zoneSelections.3.name')
+                    ]
+                    //...more zones list order by name
+                ]
+            ],
             "statusCode" => config('http_status.success'),
             "message" =>  config('message.successMsg')
         ]);
