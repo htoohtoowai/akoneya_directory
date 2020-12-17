@@ -29,7 +29,7 @@ class HolidayTest extends TestCase
                         "description" => $this->holiday->description   
                     ]
                 ]
-            ],
+            ]
         ));
     }
 }

@@ -40,7 +40,7 @@ class CategoryTest extends TestCase
                 "pagination" => [
                     "nextId" => null
                 ]
-            ],
+            ]
         ));
     }
 }

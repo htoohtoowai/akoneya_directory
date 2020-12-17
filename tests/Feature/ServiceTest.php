@@ -41,7 +41,7 @@ class ServiceTest extends TestCase
                 "pagination" => [
                     "nextId" => null
                 ]
-            ],
+            ]
         ));
     }
 

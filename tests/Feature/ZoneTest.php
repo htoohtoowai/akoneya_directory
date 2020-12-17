@@ -32,7 +32,7 @@ class ZoneTest extends TestCase
                     ]
                     //...more zones list order by name
                 ]
-            ],
+            ]
         ));
     }
 }

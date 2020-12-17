@@ -31,7 +31,7 @@ class TownshipTest extends TestCase
                         "name" => $this->township->township_name
                     ]
                 ]
-            ],
+            ]
         ));
     }
 
@@ -47,7 +47,7 @@ class TownshipTest extends TestCase
         $response->assertJson($this->successJson(
             [
                 "townships" => []
-            ],
+            ]
         ));
     }
 }

@@ -39,7 +39,7 @@ class SubCategoryTest extends TestCase
                 "pagination" => [
                     "nextId" => null
                 ]
-            ],
+            ]
         ));
     }
 
@@ -61,7 +61,7 @@ class SubCategoryTest extends TestCase
                 "pagination" => [
                     "nextId" => null
                 ]
-            ],
+            ]
         ));
     }
 }
