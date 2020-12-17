@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class ZoneTest extends TestCase
 {
+    use BaseCustomTrait;
+
     public function testZoneListSuccessfully()
     {
         $response = $this->get('/api/zones');
@@ -38,8 +40,8 @@ class ZoneTest extends TestCase
                     //...more zones list order by name
                 ]
             ],
-            "statusCode" => config('http_status.success'),
-            "message" =>  config('message.successMsg')
+            "statusCode" => $this->successStatusCode(),
+            "message" =>  $this->successMsg()
         ]);
     }
 }

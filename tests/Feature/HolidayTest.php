@@ -5,23 +5,15 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Holiday;
 
 class HolidayTest extends TestCase
 {
-   
+    use BaseCustomTrait;
+
     public function setUp(): void
     {
         parent::setUp();
         $this->holiday = $this->createHoliday();
-    }
-
-    public function createHoliday()
-    {
-        return Holiday::create([
-            'date' => config('mock_data.date'),
-            'description' => config('mock_data.description'),
-        ]);
     }
 
     public function testHolidaysByYearSuccessfully()
@@ -45,8 +37,8 @@ class HolidayTest extends TestCase
                     ]
                 ]
             ],
-            "statusCode" => config('http_status.success'),
-            "message" =>  config('message.successMsg')
+            "statusCode" => $this->successStatusCode(),
+            "message" =>  $this->successMsg()
         ]);
     }
 }
