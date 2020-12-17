@@ -21,14 +21,14 @@ class SubCategoryTest extends TestCase
         
         $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "subCategories",
             "pagination" => [
                 "nextId"
             ]
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "subCategories" => [
                     [
                         "id" => $this->subCategory->id,
@@ -40,9 +40,7 @@ class SubCategoryTest extends TestCase
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 
     public function testEmptySubCategoryByCategoryId()
@@ -51,21 +49,19 @@ class SubCategoryTest extends TestCase
         
         $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "subCategories",
             "pagination" => [
                 "nextId"
             ]
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "subCategories" => [],
                 "pagination" => [
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 }

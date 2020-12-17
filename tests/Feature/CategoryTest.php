@@ -19,14 +19,14 @@ class CategoryTest extends TestCase
     {
         $response = $this->get('api/categories?nextId=0');
         $response->assertOk();        
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "categories",
             "pagination" => [
                 "nextId"
             ]
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "categories" => [
                     [
                         'id' => $this->category->id,
@@ -41,8 +41,6 @@ class CategoryTest extends TestCase
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 }

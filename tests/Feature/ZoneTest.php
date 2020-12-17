@@ -12,11 +12,11 @@ class ZoneTest extends TestCase
     {
         $response = $this->get('/api/zones');
         $response->assertStatus(200);
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "zones"
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "zones" => [
                     [
                         "id" => config('zones.zoneSelections.1.id'),
@@ -33,8 +33,6 @@ class ZoneTest extends TestCase
                     //...more zones list order by name
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 }

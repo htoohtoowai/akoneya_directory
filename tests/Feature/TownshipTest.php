@@ -20,11 +20,11 @@ class TownshipTest extends TestCase
 
         $response = $this->get("/api/zones/$zoneId/townships");
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "townships"
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "townships" => [
                     [
                         "id" => $this->township->id,
@@ -32,9 +32,7 @@ class TownshipTest extends TestCase
                     ]
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 
     public function testEmptyTownshipListByZoneId()
@@ -43,15 +41,13 @@ class TownshipTest extends TestCase
 
         $response = $this->get("/api/zones/$zoneId/townships");
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "townships"
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "townships" => []
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 }

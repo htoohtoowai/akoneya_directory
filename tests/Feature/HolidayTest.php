@@ -18,11 +18,11 @@ class HolidayTest extends TestCase
     {
         $response = $this->get("/api/holidays?year=2020&month=10");
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "holidays"
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "holidays" => [
                     [
                         "date" => $this->holiday->date,
@@ -30,8 +30,6 @@ class HolidayTest extends TestCase
                     ]
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 }

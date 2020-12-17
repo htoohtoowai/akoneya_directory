@@ -20,15 +20,15 @@ class ServiceTest extends TestCase
         $subCategoryId = $this->subCategory->id;
         $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure([
+        $response->assertJsonStructure($this->successJsonStructure([
             "resultCount",
             "data",
             "pagination" => [
                 "nextId"
             ]
         ]));
-        $response->assertJson([
-            "result" => [
+        $response->assertJson($this->successJson(
+            [
                 "resultCount" => 1,
                 "data" => [
                     [
@@ -42,9 +42,7 @@ class ServiceTest extends TestCase
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode,
-            "message" =>  $this->successMsg
-        ]);
+        ));
     }
 
     public function testServiceListBySubCategoryIdNotFound()
@@ -58,10 +56,6 @@ class ServiceTest extends TestCase
             "statusCode",
             "message",
         ]);
-        $response->assertJson([
-            "result" => null,
-            "statusCode" => $this->badRequestStatusCode,
-            "message" =>  $this->notFoundMsg
-        ]);
+        $response->assertJson($this->failedJson(null));
     }
 }
