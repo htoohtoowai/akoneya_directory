@@ -8,8 +8,6 @@ use Tests\TestCase;
 
 class ZoneTest extends TestCase
 {
-    use BaseTestServiceTrait;
-
     public function testZoneListSuccessfully()
     {
         $response = $this->get('/api/zones');

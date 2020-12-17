@@ -8,8 +8,6 @@ use Tests\TestCase;
 
 class HolidayTest extends TestCase
 {
-    use BaseTestServiceTrait;
-
     public function setUp(): void
     {
         parent::setUp();
