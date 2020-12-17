@@ -43,7 +43,7 @@ class SubCategoryTest extends TestCase
         ]);
     }
 
-    public function testSubCategoriesListSuccessfully()
+    public function testSubCategoryByCategoryIdSuccessfully()
     {
         $categoryId = $this->category->id;
         
@@ -69,6 +69,35 @@ class SubCategoryTest extends TestCase
                         "totalContent" => 0
                     ]
                 ],
+                "pagination" => [
+                    "nextId" => null
+                ]
+            ],
+            "statusCode" => config('http_status.success'),
+            "message" =>  config('message.successMsg')
+        ]);
+    }
+
+    public function testEmptySubCategoryByCategoryId()
+    {
+        $categoryId = 999;
+        
+        $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            "result" => [
+                "subCategories",
+                "pagination" => [
+                    "nextId"
+                ]
+            ],
+            "statusCode",
+            "message",
+        ]);
+
+        $response->assertJson([
+            "result" => [
+                "subCategories" => [],
                 "pagination" => [
                     "nextId" => null
                 ]

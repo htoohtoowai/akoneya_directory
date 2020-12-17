@@ -75,4 +75,21 @@ class ServiceTest extends TestCase
             "message" =>  config('message.successMsg')
         ]);
     }
+
+    public function testServiceListBySubCategoryIdNotFound()
+    {
+        $subCategoryId = 999;
+        $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
+        $response->assertStatus(config('http_status.badRequest'));
+        $response->assertJsonStructure([
+            "result",
+            "statusCode",
+            "message",
+        ]);
+        $response->assertJson([
+            "result" => null,
+            "statusCode" => config('http_status.badRequest'),
+            "message" =>  config('message.notFoundMsg')
+        ]);
+    }
 }

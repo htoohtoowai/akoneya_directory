@@ -52,7 +52,7 @@ class TownshipTest extends TestCase
 
     public function testEmptyTownshipListByZoneId()
     {
-        $zoneId = 1;
+        $zoneId = 999;
 
         $response = $this->get("/api/zones/$zoneId/townships");
         $response->assertOk();
