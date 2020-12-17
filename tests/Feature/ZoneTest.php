@@ -33,8 +33,8 @@ class ZoneTest extends TestCase
                     //...more zones list order by name
                 ]
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 }

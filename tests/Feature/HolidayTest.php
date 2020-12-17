@@ -30,8 +30,8 @@ class HolidayTest extends TestCase
                     ]
                 ]
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 }

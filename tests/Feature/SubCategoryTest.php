@@ -40,8 +40,8 @@ class SubCategoryTest extends TestCase
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 
@@ -64,8 +64,8 @@ class SubCategoryTest extends TestCase
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 }

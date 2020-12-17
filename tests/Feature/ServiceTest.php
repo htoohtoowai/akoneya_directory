@@ -42,8 +42,8 @@ class ServiceTest extends TestCase
                     "nextId" => null
                 ]
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 
@@ -60,8 +60,8 @@ class ServiceTest extends TestCase
         ]);
         $response->assertJson([
             "result" => null,
-            "statusCode" => $this->badRequestStatusCode(),
-            "message" =>  $this->notFoundMsg()
+            "statusCode" => $this->badRequestStatusCode,
+            "message" =>  $this->notFoundMsg
         ]);
     }
 }

@@ -32,8 +32,8 @@ class TownshipTest extends TestCase
                     ]
                 ]
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 
@@ -50,8 +50,8 @@ class TownshipTest extends TestCase
             "result" => [
                 "townships" => []
             ],
-            "statusCode" => $this->successStatusCode(),
-            "message" =>  $this->successMsg()
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->successMsg
         ]);
     }
 }

@@ -15,6 +15,15 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, DatabaseMigrations;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->successStatusCode = config('http_status.success');
+        $this->badRequestStatusCode = config('http_status.badRequest');
+        $this->successMsg = config('message.successMsg');
+        $this->notFoundMsg = config('message.notFoundMsg');
+    }
+
     public function jsonStructure($resultStructure)
     {
         return [
@@ -22,26 +31,6 @@ abstract class TestCase extends BaseTestCase
             "statusCode",
             "message",
         ];
-    }
-
-    public function successStatusCode()
-    {
-        return config('http_status.success');
-    }
-
-    public function badRequestStatusCode()
-    {
-        return config('http_status.badRequest');
-    }
-
-    public function successMsg()
-    {
-        return config('message.successMsg');
-    }
-    
-    public function notFoundMsg()
-    {
-        return config('message.notFoundMsg');
     }
 
     public function createCategory()
