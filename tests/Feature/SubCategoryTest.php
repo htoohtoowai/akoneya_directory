@@ -23,17 +23,12 @@ class SubCategoryTest extends TestCase
         
         $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure([
-            "result" => [
-                "subCategories",
-                "pagination" => [
-                    "nextId"
-                ]
-            ],
-            "statusCode",
-            "message",
-        ]);
-
+        $response->assertJsonStructure($this->jsonStructure([
+            "subCategories",
+            "pagination" => [
+                "nextId"
+            ]
+        ]));
         $response->assertJson([
             "result" => [
                 "subCategories" => [
@@ -58,17 +53,12 @@ class SubCategoryTest extends TestCase
         
         $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure([
-            "result" => [
-                "subCategories",
-                "pagination" => [
-                    "nextId"
-                ]
-            ],
-            "statusCode",
-            "message",
-        ]);
-
+        $response->assertJsonStructure($this->jsonStructure([
+            "subCategories",
+            "pagination" => [
+                "nextId"
+            ]
+        ]));
         $response->assertJson([
             "result" => [
                 "subCategories" => [],

@@ -22,13 +22,9 @@ class TownshipTest extends TestCase
 
         $response = $this->get("/api/zones/$zoneId/townships");
         $response->assertOk();
-        $response->assertJsonStructure([
-            "result" => [
-                "townships"
-            ],
-            "statusCode",
-            "message",
-        ]);
+        $response->assertJsonStructure($this->jsonStructure([
+            "townships"
+        ]));
         $response->assertJson([
             "result" => [
                 "townships" => [
@@ -49,13 +45,9 @@ class TownshipTest extends TestCase
 
         $response = $this->get("/api/zones/$zoneId/townships");
         $response->assertOk();
-        $response->assertJsonStructure([
-            "result" => [
-                "townships"
-            ],
-            "statusCode",
-            "message",
-        ]);
+        $response->assertJsonStructure($this->jsonStructure([
+            "townships"
+        ]));
         $response->assertJson([
             "result" => [
                 "townships" => []

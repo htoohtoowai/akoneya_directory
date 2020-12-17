@@ -22,17 +22,13 @@ class ServiceTest extends TestCase
         $subCategoryId = $this->subCategory->id;
         $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure([
-            "result" => [
-                "resultCount",
-                "data",
-                "pagination" => [
-                    "nextId"
-                ]
-            ],
-            "statusCode",
-            "message",
-        ]);
+        $response->assertJsonStructure($this->jsonStructure([
+            "resultCount",
+            "data",
+            "pagination" => [
+                "nextId"
+            ]
+        ]));
         $response->assertJson([
             "result" => [
                 "resultCount" => 1,

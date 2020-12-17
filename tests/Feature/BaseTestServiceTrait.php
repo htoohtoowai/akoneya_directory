@@ -10,6 +10,15 @@ use App\Models\Township;
 
 trait BaseTestServiceTrait
 {
+    public function jsonStructure($resultStructure)
+    {
+        return [
+            "result" => $resultStructure,
+            "statusCode",
+            "message",
+        ];
+    }
+
     public function successStatusCode()
     {
         return config('http_status.success');

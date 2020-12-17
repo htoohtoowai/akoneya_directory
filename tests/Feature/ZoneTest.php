@@ -14,14 +14,9 @@ class ZoneTest extends TestCase
     {
         $response = $this->get('/api/zones');
         $response->assertStatus(200);
-        $response->assertJsonStructure([
-            "result" => [
-                "zones"
-            ],
-            "statusCode",
-            "message",
-        ]);
-
+        $response->assertJsonStructure($this->jsonStructure([
+            "zones"
+        ]));
         $response->assertJson([
             "result" => [
                 "zones" => [
