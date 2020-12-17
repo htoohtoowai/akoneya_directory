@@ -9,28 +9,26 @@ use App\Models\Township;
 
 class TownshipTest extends TestCase
 {
-    public function createTownship($data)
+    public function  setUp(): void
     {
-        Township::create($data);
+        parent::setUp();
+        $this->township = $this->createTownship();
     }
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testSubCategories()
+
+    public function createTownship()
     {
-        $this->createTownship([
-            'township_name' => "Hlaing",
+        return Township::create([
+            'township_name' => config('mock_data.township_name'),
             'zone_id' => config('mock_data.zone_id')
         ]);
-
+    }
+    
+    public function testTownshipListByZoneIdSuccessfully()
+    {
         $zoneId = config('mock_data.zone_id');
 
         $response = $this->get("/api/zones/$zoneId/townships");
-
-        $response->assertStatus(200);
-
+        $response->assertOk();
         $response->assertJsonStructure([
             "result" => [
                 "townships"
@@ -38,8 +36,37 @@ class TownshipTest extends TestCase
             "statusCode",
             "message",
         ]);
-
         $response->assertJson([
+            "result" => [
+                "townships" => [
+                    [
+                        "id" => $this->township->id,
+                        "name" => $this->township->township_name
+                    ]
+                ]
+            ],
+            "statusCode" => config('http_status.success'),
+            "message" =>  config('message.successMsg')
+        ]);
+    }
+
+    public function testEmptyTownshipListByZoneId()
+    {
+        $zoneId = 1;
+
+        $response = $this->get("/api/zones/$zoneId/townships");
+        $response->assertOk();
+        $response->assertJsonStructure([
+            "result" => [
+                "townships"
+            ],
+            "statusCode",
+            "message",
+        ]);
+        $response->assertJson([
+            "result" => [
+                "townships" => []
+            ],
             "statusCode" => config('http_status.success'),
             "message" =>  config('message.successMsg')
         ]);

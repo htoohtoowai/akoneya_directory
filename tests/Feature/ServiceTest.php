@@ -6,31 +6,45 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\SubCategory;
+use App\Models\Hotel;
 
 class ServiceTest extends TestCase
 {
-    public function createSubCategory($data)
+    public function setUp(): void
     {
-        return SubCategory::create($data);
+        parent::setUp();
+        $this->subCategory = $this->createSubCategory(config('mock_data.categoryId'));
+        $this->service = $this->createService();
     }
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testServiceListBySubCategoryId()
-    {
-        $subCategory = $this->createSubCategory([
-            'subcategory_name' => config('mock_data.subCategoryName'),
-            'subcategory_name_mm' => config('mock_data.subCategoryName'),
-            'category_id' => config('mock_data.categoryId'),
-            'service_code' => config('mock_data.serviceCode')
-        ]);
-       
-        $response = $this->get("/api/subcategories/$subCategory->id/services");
-       
-        $response->assertStatus(200);
 
+    public function createSubCategory($categoryId)
+    {
+        $subCategoryName = config('mock_data.subCategoryName');
+        return SubCategory::create([
+            'subcategory_name' => $subCategoryName,
+            'subcategory_name_mm' => $subCategoryName,
+            'subcategory_name_zh' => $subCategoryName,
+            'service_code' => config('mock_data.serviceCode'),
+            'category_id' => $categoryId,
+        ]);
+    }
+
+    public function createService()
+    {
+        return Hotel::create([
+            'name' => config('mock_data.service_name'),
+            'township_id' => config('mock_data.township_id'),
+            'zone_id' => config('mock_data.zone_id'),
+            'address' => config('mock_data.address'),
+            'phone' => config('mock_data.phone')
+        ]);
+    }
+    
+    public function testServiceListBySubCategoryIdSuccessfully()
+    {
+        $subCategoryId = $this->subCategory->id;
+        $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
+        $response->assertOk();
         $response->assertJsonStructure([
             "result" => [
                 "resultCount",
@@ -42,8 +56,21 @@ class ServiceTest extends TestCase
             "statusCode",
             "message",
         ]);
-
         $response->assertJson([
+            "result" => [
+                "resultCount" => 1,
+                "data" => [
+                    [
+                        "id" => $this->service->id,
+                        "name" => $this->service->name,
+                        "address" => $this->service->address,
+                        "phone" => [$this->service->phone]
+                    ]
+                ],
+                "pagination" => [
+                    "nextId" => null
+                ]
+            ],
             "statusCode" => config('http_status.success'),
             "message" =>  config('message.successMsg')
         ]);

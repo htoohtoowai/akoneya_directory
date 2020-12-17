@@ -10,22 +10,24 @@ use App\Models\Holiday;
 class HolidayTest extends TestCase
 {
    
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testHolidaysByYear()
+    public function setUp(): void
     {
-        Holiday::create([
+        parent::setUp();
+        $this->holiday = $this->createHoliday();
+    }
+
+    public function createHoliday()
+    {
+        return Holiday::create([
             'date' => config('mock_data.date'),
             'description' => config('mock_data.description'),
         ]);
+    }
 
-        $response = $this->get("/api/holidays?year=2020&year=1");
-
-        $response->assertStatus(200);
-
+    public function testHolidaysByYearSuccessfully()
+    {
+        $response = $this->get("/api/holidays?year=2020&month=10");
+        $response->assertOk();
         $response->assertJsonStructure([
             "result" => [
                 "holidays"
@@ -35,6 +37,14 @@ class HolidayTest extends TestCase
         ]);
 
         $response->assertJson([
+            "result" => [
+                "holidays" => [
+                    [
+                        "date" => $this->holiday->date,
+                        "description" => $this->holiday->description   
+                    ]
+                ]
+            ],
             "statusCode" => config('http_status.success'),
             "message" =>  config('message.successMsg')
         ]);

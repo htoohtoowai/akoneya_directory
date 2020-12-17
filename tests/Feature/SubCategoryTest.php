@@ -11,46 +11,68 @@ use App\Models\SubCategory;
 
 class SubCategoryTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testSubCategories()
+    public function setUp(): void
     {
-        $categoryName = config('mock_data.categoryName');
-        $category = Category::create([
-            'category_name' => $categoryName,
-            'category_name_mm' => $categoryName,
-            'category_name_zh' => $categoryName,
+        parent::setUp();
+        $this->category = $this->createCategory();
+        $this->subCategory = $this->createSubCategory($this->category->id);
+    }
+
+    public function createCategory()
+    {
+        return Category::create([
+            'category_name' => config('mock_data.nameEn'),
+            'category_name_mm' => config('mock_data.nameMm'),
+            'category_name_zh' => config('mock_data.nameZh'),
+            'image' => config('mock_data.fakeLogo'),
             'primary_color_code' => config('mock_data.colorCode'),
             'secondary_color_code' => config('mock_data.colorCode'),
+            'deleted_status' => config('mock_data.deleteStatus'),
         ]);
+    }
 
+    public function createSubCategory($categoryId)
+    {
         $subCategoryName = config('mock_data.subCategoryName');
-        SubCategory::create([
+        return SubCategory::create([
             'subcategory_name' => $subCategoryName,
             'subcategory_name_mm' => $subCategoryName,
             'subcategory_name_zh' => $subCategoryName,
             'service_code' => config('mock_data.serviceCode'),
-            'category_id' => $category->id,
+            'category_id' => $categoryId,
         ]);
+    }
 
-       
-        $response = $this->get("/api/categories/$category->id/subCategories");
-
-        $response->assertStatus(200);
-
+    public function testSubCategoriesListSuccessfully()
+    {
+        $categoryId = $this->category->id;
+        
+        $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
+        $response->assertOk();
         $response->assertJsonStructure([
             "result" => [
                 "subCategories",
-                "pagination"
+                "pagination" => [
+                    "nextId"
+                ]
             ],
             "statusCode",
             "message",
         ]);
 
         $response->assertJson([
+            "result" => [
+                "subCategories" => [
+                    [
+                        "id" => $this->subCategory->id,
+                        "name" => $this->subCategory->subcategory_name,
+                        "totalContent" => 0
+                    ]
+                ],
+                "pagination" => [
+                    "nextId" => null
+                ]
+            ],
             "statusCode" => config('http_status.success'),
             "message" =>  config('message.successMsg')
         ]);
