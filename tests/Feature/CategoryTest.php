@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
-    use BaseCustomTrait;
+    use BaseTestServiceTrait;
 
     public function setUp(): void
     {

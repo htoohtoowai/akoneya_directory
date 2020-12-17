@@ -8,7 +8,7 @@ use App\Models\Hotel;
 use App\Models\Holiday;
 use App\Models\Township;
 
-trait BaseCustomTrait
+trait BaseTestServiceTrait
 {
     public function successStatusCode()
     {

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ServiceTest extends TestCase
 {
-    use BaseCustomTrait;
+    use BaseTestServiceTrait;
 
     public function setUp(): void
     {
@@ -58,6 +58,7 @@ class ServiceTest extends TestCase
         $subCategoryId = 999;
         $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
         $response->assertStatus(config('http_status.badRequest'));
+        $this->assertBadRequest($response->getStatusCode());
         $response->assertJsonStructure([
             "result",
             "statusCode",

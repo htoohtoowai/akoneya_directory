@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ZoneTest extends TestCase
 {
-    use BaseCustomTrait;
+    use BaseTestServiceTrait;
 
     public function testZoneListSuccessfully()
     {
