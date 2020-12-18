@@ -20,13 +20,6 @@ class ServiceTest extends TestCase
         $subCategoryId = $this->subCategory->id;
         $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
         $response->assertOk();
-        $response->assertJsonStructure($this->successJsonStructure([
-            "resultCount",
-            "data",
-            "pagination" => [
-                "nextId"
-            ]
-        ]));
         $response->assertJson($this->successJson(
             [
                 "resultCount" => 1,
@@ -51,11 +44,6 @@ class ServiceTest extends TestCase
         $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
         $response->assertStatus(config('http_status.badRequest'));
         $this->assertBadRequest($response->getStatusCode());
-        $response->assertJsonStructure([
-            "result",
-            "statusCode",
-            "message",
-        ]);
         $response->assertJson($this->failedJson(null));
     }
 }

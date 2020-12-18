@@ -24,30 +24,12 @@ abstract class TestCase extends BaseTestCase
         $this->notFoundMsg = config('message.notFoundMsg');
     }
 
-    public function successJsonStructure($resultJsonStructure)
-    {
-        return [
-            "result" => $resultJsonStructure,
-            "statusCode",
-            "message",
-        ];
-    }
-
     public function successJson($resultJson)
     {
         return [
             "result" => $resultJson,
             "statusCode" => $this->successStatusCode,
             "message" =>  $this->successMsg
-        ];
-    }
-
-    public function failedJsonStructure()
-    {
-        return [
-            "result",
-            "statusCode",
-            "message",
         ];
     }
 
