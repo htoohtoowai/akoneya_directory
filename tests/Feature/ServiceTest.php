@@ -5,47 +5,45 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\SubCategory;
 
 class ServiceTest extends TestCase
 {
-    public function createSubCategory($data)
+    public function setUp(): void
     {
-        return SubCategory::create($data);
+        parent::setUp();
+        $this->subCategory = $this->createSubCategory(config('mock_data.categoryId'));
+        $this->service = $this->createService();
     }
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testServiceListBySubCategoryId()
+    
+    public function testServiceListBySubCategoryIdSuccessfully()
     {
-        $subCategory = $this->createSubCategory([
-            'subcategory_name' => config('mock_data.subCategoryName'),
-            'subcategory_name_mm' => config('mock_data.subCategoryName'),
-            'category_id' => config('mock_data.categoryId'),
-            'service_code' => config('mock_data.serviceCode')
-        ]);
-       
-        $response = $this->get("/api/subcategories/$subCategory->id/services");
-       
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
-            "result" => [
-                "resultCount",
-                "data",
+        $subCategoryId = $this->subCategory->id;
+        $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
+        $response->assertOk();
+        $response->assertJson($this->successJson(
+            [
+                "resultCount" => 1,
+                "data" => [
+                    [
+                        "id" => $this->service->id,
+                        "name" => $this->service->name,
+                        "address" => $this->service->address,
+                        "phone" => [$this->service->phone]
+                    ]
+                ],
                 "pagination" => [
-                    "nextId"
+                    "nextId" => null
                 ]
-            ],
-            "statusCode",
-            "message",
-        ]);
+            ]
+        ));
+    }
 
-        $response->assertJson([
-            "statusCode" => config('http_status.success'),
-            "message" =>  config('message.successMsg')
-        ]);
+    public function testServiceListBySubCategoryIdNotFound()
+    {
+        $subCategoryId = 999;
+        $response = $this->get("/api/subcategories/$subCategoryId/services?nextId=0");
+        $response->assertStatus(config('http_status.badRequest'));
+        $this->assertBadRequest($response->getStatusCode());
+        $response->assertJson($this->failedJson(null));
     }
 }

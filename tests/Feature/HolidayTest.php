@@ -5,38 +5,28 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Holiday;
 
 class HolidayTest extends TestCase
 {
-   
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testHolidaysByYear()
+    public function setUp(): void
     {
-        Holiday::create([
-            'date' => config('mock_data.date'),
-            'description' => config('mock_data.description'),
-        ]);
+        parent::setUp();
+        $this->holiday = $this->createHoliday();
+    }
 
-        $response = $this->get("/api/holidays?year=2020&year=1");
-
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
-            "result" => [
-                "holidays"
-            ],
-            "statusCode",
-            "message",
-        ]);
-
-        $response->assertJson([
-            "statusCode" => config('http_status.success'),
-            "message" =>  config('message.successMsg')
-        ]);
+    public function testHolidaysByYearSuccessfully()
+    {
+        $response = $this->get("/api/holidays?year=2020&month=10");
+        $response->assertOk();
+        $response->assertJson($this->successJson(
+            [
+                "holidays" => [
+                    [
+                        "date" => $this->holiday->date,
+                        "description" => $this->holiday->description   
+                    ]
+                ]
+            ]
+        ));
     }
 }

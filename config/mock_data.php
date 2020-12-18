@@ -14,5 +14,10 @@ return [
     'serviceCode' => "DS001",
     'colorCode'=>"#00FFFF",
     'date'=>"2020-10-14 11:10:41",
-    'description'=>"Diwali/Deepavali"
+    'description'=>"Diwali/Deepavali",
+    'township_id' => 1,
+    'township_name' => "Hlaing",
+    'service_name' => "Excel Palace",
+    'address' => "Eiusmod elit est re",
+    'phone' => "+1 (998) 239-9286"
 ];

@@ -5,43 +5,43 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Township;
 
 class TownshipTest extends TestCase
 {
-    public function createTownship($data)
+    public function  setUp(): void
     {
-        Township::create($data);
+        parent::setUp();
+        $this->township = $this->createTownship();
     }
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testSubCategories()
-    {
-        $this->createTownship([
-            'township_name' => "Hlaing",
-            'zone_id' => config('mock_data.zone_id')
-        ]);
 
+    public function testTownshipListByZoneIdSuccessfully()
+    {
         $zoneId = config('mock_data.zone_id');
 
         $response = $this->get("/api/zones/$zoneId/townships");
+        $response->assertOk();
+        $response->assertJson($this->successJson(
+            [
+                "townships" => [
+                    [
+                        "id" => $this->township->id,
+                        "name" => $this->township->township_name
+                    ]
+                ]
+            ]
+        ));
+    }
 
-        $response->assertStatus(200);
+    public function testEmptyTownshipListByZoneId()
+    {
+        $zoneId = 999;
 
-        $response->assertJsonStructure([
-            "result" => [
-                "townships"
-            ],
-            "statusCode",
-            "message",
-        ]);
-
-        $response->assertJson([
-            "statusCode" => config('http_status.success'),
-            "message" =>  config('message.successMsg')
-        ]);
+        $response = $this->get("/api/zones/$zoneId/townships");
+        $response->assertOk();
+        $response->assertJson($this->successJson(
+            [
+                "townships" => []
+            ]
+        ));
     }
 }

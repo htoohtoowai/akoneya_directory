@@ -5,54 +5,51 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Category;
-use App\Models\SubCategory;
-
 
 class SubCategoryTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testSubCategories()
+    public function setUp(): void
     {
-        $categoryName = config('mock_data.categoryName');
-        $category = Category::create([
-            'category_name' => $categoryName,
-            'category_name_mm' => $categoryName,
-            'category_name_zh' => $categoryName,
-            'primary_color_code' => config('mock_data.colorCode'),
-            'secondary_color_code' => config('mock_data.colorCode'),
-        ]);
+        parent::setUp();
+        $this->category = $this->createCategory();
+        $this->subCategory = $this->createSubCategory($this->category->id);
+    }
 
-        $subCategoryName = config('mock_data.subCategoryName');
-        SubCategory::create([
-            'subcategory_name' => $subCategoryName,
-            'subcategory_name_mm' => $subCategoryName,
-            'subcategory_name_zh' => $subCategoryName,
-            'service_code' => config('mock_data.serviceCode'),
-            'category_id' => $category->id,
-        ]);
+    public function testSubCategoryByCategoryIdSuccessfully()
+    {
+        $categoryId = $this->category->id;
+        
+        $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
+        $response->assertOk();
+        $response->assertJson($this->successJson(
+            [
+                "subCategories" => [
+                    [
+                        "id" => $this->subCategory->id,
+                        "name" => $this->subCategory->subcategory_name,
+                        "totalContent" => 0
+                    ]
+                ],
+                "pagination" => [
+                    "nextId" => null
+                ]
+            ]
+        ));
+    }
 
-       
-        $response = $this->get("/api/categories/$category->id/subCategories");
-
-        $response->assertStatus(200);
-
-        $response->assertJsonStructure([
-            "result" => [
-                "subCategories",
-                "pagination"
-            ],
-            "statusCode",
-            "message",
-        ]);
-
-        $response->assertJson([
-            "statusCode" => config('http_status.success'),
-            "message" =>  config('message.successMsg')
-        ]);
+    public function testEmptySubCategoryByCategoryId()
+    {
+        $categoryId = 999;
+        
+        $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
+        $response->assertOk();
+        $response->assertJson($this->successJson(
+            [
+                "subCategories" => [],
+                "pagination" => [
+                    "nextId" => null
+                ]
+            ]
+        ));
     }
 }
