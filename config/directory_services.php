@@ -28,39 +28,39 @@ return [
         ],
 		"DS007" => [
 			"name" => "Business Training",
-			"model" => "App\Model\Directory\BusinessTraining"
+			"model" => "App\Models\BusinessTraining"
 		],
 		"DS008" => [
 			"name" => "Internet Service",
-			"model" => "App\Model\Directory\InternetService"
+			"model" => "App\Models\InternetService"
 		],
 		"DS009" => [
 			"name" => "It Training",
-			"model" => "App\Model\Directory\ItTraining"
+			"model" => "App\Models\ItTraining"
 		],
 		"DS0010" => [
 			"name" => "Language Training",
-			"model" => "App\Model\Directory\LanguageTraining"
+			"model" => "App\Models\LanguageTraining"
 		],
 		"DS0011" => [
 			"name" => "Mobile Phone And Accessories",
-			"model" => "App\Model\Directory\MobilePhoneAndAccessories"
+			"model" => "App\Models\MobilePhoneAndAccessories"
 		],
 		"DS0012" => [
 			"name" => "Mobile Repair Training And Services",
-			"model" => "App\Model\Directory\MobileRepairTrainingAndServices"
+			"model" => "App\Models\MobileRepairTrainingAndServices"
 		],
 		"DS0013" => [
 			"name" => "Operator",
-			"model" => "App\Model\Directory\Operator"
+			"model" => "App\Models\Operator"
 		],
 		"DS0014" => [
 			"name" => "Private University",
-			"model" => "App\Model\Directory\PrivateUniversity"
+			"model" => "App\Models\PrivateUniversity"
 		],
 		"DS0015" => [
 			"name" => "Public University",
-			"model" => "App\Model\Directory\PublicUniversity"
+			"model" => "App\Models\PublicUniversity"
 		],
     ]
 ];
