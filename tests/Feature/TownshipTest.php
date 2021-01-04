@@ -18,7 +18,7 @@ class TownshipTest extends TestCase
     {
         $zoneId = config('mock_data.zone_id');
 
-        $response = $this->get("/api/zones/$zoneId/townships");
+        $response = $this->get("/api/v1.0/zones/$zoneId/townships");
         $response->assertOk();
         $response->assertJson($this->successJson(
             [
@@ -36,7 +36,7 @@ class TownshipTest extends TestCase
     {
         $zoneId = 999;
 
-        $response = $this->get("/api/zones/$zoneId/townships");
+        $response = $this->get("/api/v1.0/zones/$zoneId/townships");
         $response->assertOk();
         $response->assertJson($this->successJson(
             [

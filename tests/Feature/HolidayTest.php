@@ -16,7 +16,7 @@ class HolidayTest extends TestCase
 
     public function testHolidaysByYearSuccessfully()
     {
-        $response = $this->get("/api/holidays?year=2020&month=10");
+        $response = $this->get("/api/v1.0/holidays?year=2020&month=10");
         $response->assertOk();
         $response->assertJson($this->successJson(
             [

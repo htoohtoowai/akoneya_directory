@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
+    Route::group(['prefix' => 'v1.0'], function () {
+        Route::get('categories','CategoryController@getCategoryList');
+        Route::get('categories/{id}/subCategories','SubCategoryController@getSubCategoryList');
+        Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
+        Route::get('zones', 'ZoneController@getZoneList');
+        Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
 
-    Route::get('categories','CategoryController@getCategoryList');
-    Route::get('categories/{id}/subCategories','SubCategoryController@getSubCategoryList');
-	Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
-    Route::get('zones', 'ZoneController@getZoneList');
-	Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
-
-	Route::get('holidays', 'HolidayController@getHolidays');
+        Route::get('holidays', 'HolidayController@getHolidays');
+    });
 
 });
