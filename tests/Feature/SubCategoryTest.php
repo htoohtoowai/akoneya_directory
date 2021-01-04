@@ -19,7 +19,7 @@ class SubCategoryTest extends TestCase
     {
         $categoryId = $this->category->id;
         
-        $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
+        $response = $this->get("/api/v1.0/categories/$categoryId/subCategories?nextId=0");
         $response->assertOk();
         $response->assertJson($this->successJson(
             [
@@ -41,7 +41,7 @@ class SubCategoryTest extends TestCase
     {
         $categoryId = 999;
         
-        $response = $this->get("/api/categories/$categoryId/subCategories?nextId=0");
+        $response = $this->get("/api/v1.0/categories/$categoryId/subCategories?nextId=0");
         $response->assertOk();
         $response->assertJson($this->successJson(
             [
