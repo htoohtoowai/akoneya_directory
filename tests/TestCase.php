@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Category;
 use App\Models\SubCategory;
@@ -22,8 +23,23 @@ abstract class TestCase extends BaseTestCase
         $this->badRequestStatusCode = config('http_status.badRequest');
         $this->successMsg = config('message.successMsg');
         $this->notFoundMsg = config('message.notFoundMsg');
+        $this->setUaaAuthHttpFake();
     }
-
+    public function setUaaAuthHttpFake()
+    {
+        Http::fake([
+            // Stub a JSON response for UAA Service Authenticate endpoint
+            config('services.uaa_auth_service.url') => Http::response([
+                'result' => [
+                    'user' => [
+                        'id' => 1
+                    ]
+                ],
+                'statusCode' => 200,
+                'message' => 'Success.'
+            ], 200, ['Headers'])
+        ]);
+    }
     public function successJson($resultJson)
     {
         return [
@@ -102,10 +118,20 @@ abstract class TestCase extends BaseTestCase
     public function assertBadRequest($actual)
     {
         self::assertSame(
-            400, $actual,
+            400,
+            $actual,
             "Response status code [{$actual}] is not an bad request status code."
         );
 
         return $this;
+    }
+
+    public function badRequestJsonStructure()
+    {
+        return [
+            "result" => null,
+            "statusCode" => config('http_status.badRequest'),
+        ];
+        $this->setUaaAuthHttpFake();
     }
 }
