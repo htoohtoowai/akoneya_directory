@@ -4,8 +4,12 @@ namespace App\Repositories;
 
 use App\Repositories\ResponseRepository;
 use App\Models\TravelBlog;
-use App\Http\Resources\TravelBlogResourceCollection;
 use App\Models\TravelSavedBlog;
+use App\Models\TravelBlogMedia;
+
+use App\Http\Resources\TravelBlogResourceCollection;
+use App\Http\Resources\TravelBlogDetailResource;
+
 use App\Exceptions\NotFoundException;
 
 class TravelBlogRepository extends BaseRepository
@@ -27,8 +31,9 @@ class TravelBlogRepository extends BaseRepository
 
             if ($nextId != 0) {
                 $nextData = TravelBlog::find($nextId);
+                
                 if ($nextData) {
-                    $travelBlogInformationQuery = $travelBlogInformationQuery->where('title', ">=", $nextData->name);
+                    $travelBlogInformationQuery = $travelBlogInformationQuery->where('title', ">=", $nextData->title);
                 }
             }
            
@@ -43,19 +48,26 @@ class TravelBlogRepository extends BaseRepository
                 
                 unset($travelBlogInformation[$paginationCount - 1]);
             }
-          
+        
             foreach ($travelBlogInformation as $key => $value) {
                 $travelBlogInformation[$key]['isSaved'] = (TravelSavedBlog::where('client_user_id', $clientUserId)->where('travel_blog_id', $value['id'])->first() != null);
             }
         }
+      
         return $this->responseRepo->successResponse(new TravelBlogResourceCollection($travelBlogInformation, $this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
     public function getDetail($id, $clientUserId)
     {
+        $traveBlogInfo = [];
         $travelBlog = TravelBlog::find($id);
         if (!$travelBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }
+        $traveBlogInfo = $travelBlog;
+        $traveBlogInfo['mediaList'] = TravelBlogMedia::where('travel_blog_id', $id)->get();
+        $traveBlogInfo['isSaved'] = (TravelSavedBlog::where('client_user_id', $clientUserId)->where('travel_blog_id', $id)->first() != null);
+
+        return $this->responseRepo->successResponse(new TravelBlogDetailResource($travelBlog), $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 }
