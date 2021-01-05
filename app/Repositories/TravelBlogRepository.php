@@ -60,7 +60,7 @@ class TravelBlogRepository extends BaseRepository
     public function getDetail($id, $clientUserId)
     {
         $traveBlogInfo = [];
-        $travelBlog = TravelBlog::find($id);
+        $travelBlog = TravelBlog::where('id', $id)->where('deleted_status', $this->disableDeletedStatus)->first();
         if (!$travelBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }

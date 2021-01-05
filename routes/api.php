@@ -20,7 +20,7 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
         Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
         Route::get('zones', 'ZoneController@getZoneList');
         Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
-        Route::get('holidays', 'HolidayController@getHolidays');       
+        Route::get('holidays', 'HolidayController@getHolidays');
 
         Route::group(['middleware' => 'authenticate.to.uaa'], function () {
             Route::group(['prefix' => 'travelBlogs'], function () {
