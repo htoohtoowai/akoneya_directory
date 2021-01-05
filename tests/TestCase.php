@@ -11,6 +11,9 @@ use App\Models\SubCategory;
 use App\Models\Hotel;
 use App\Models\Holiday;
 use App\Models\Township;
+use App\Models\TravelBlog;
+use App\Models\TravelSavedBlog;
+use App\User;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -23,6 +26,7 @@ abstract class TestCase extends BaseTestCase
         $this->badRequestStatusCode = config('http_status.badRequest');
         $this->successMsg = config('message.successMsg');
         $this->notFoundMsg = config('message.notFoundMsg');
+        $this->deleteMsg = config('message.deleteSuccessMsg');
         $this->setUaaAuthHttpFake();
     }
     public function setUaaAuthHttpFake()
@@ -49,6 +53,15 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
+    public function deleteSuccessJson($resultJson)
+    {
+        return [
+            "result" => $resultJson,
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $this->deleteMsg
+        ];
+    }
+
     public function failedJson($resultJson)
     {
         return [
@@ -56,6 +69,27 @@ abstract class TestCase extends BaseTestCase
             "statusCode" => $this->badRequestStatusCode,
             "message" =>  $this->notFoundMsg
         ];
+    }
+
+    public function createUser()
+    {
+        return User::create([
+            'name' => config('mock_data.name'),
+            'email' => config('mock_data.email'),
+            'login_type' => config('mock_data.emailLoginType'),
+            'active_status' => "active",
+            'password' => bcrypt(config('mock_data.password'))
+        ]);
+    }
+
+    public function createPersonalInformation($userId)
+    {
+        return PersonalInformation::create([
+            'client_user_id' => $userId,
+            'name' => config('mock_data.name'),
+            'email' => config('mock_data.email'),
+            'image' => config('mock_data.coverPhotoUrl'),
+        ]);
     }
 
     public function createCategory()
@@ -107,6 +141,27 @@ abstract class TestCase extends BaseTestCase
         return Holiday::create([
             'date' => config('mock_data.date'),
             'description' => config('mock_data.description'),
+        ]);
+    }
+
+    public function createTravelBlog()
+    {
+        return TravelBlog::create([
+            'zone_id' => config('mock_data.zone_id'),
+            'title' => config('mock_data.service_name'),
+            'overview' => config('mock_data.service_name'),
+            'history' => config('mock_data.description'),
+            'main_image' => config('mock_data.fakeLogo'),
+            'check_in_point' => config('mock_data.service_name'),
+        ]);
+    }
+
+    public function createSavedBlog($clientUserId,$travelBlogId)
+    {
+        return TravelSavedBlog::create([
+            'client_user_id' => $clientUserId,
+            'travel_blog_id' => $travelBlogId,
+            'created_at' => date("Y-m-d H:i:s")
         ]);
     }
 
