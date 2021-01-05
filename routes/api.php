@@ -22,6 +22,12 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
         Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
 
         Route::get('holidays', 'HolidayController@getHolidays');
+
+        Route::group(['prefix' => 'savedTravelBlog'], function () {
+            Route::post('/', 'SavedBlogController@createSavedBlog');
+            Route::get('/', 'SavedBlogController@getSavedBlogList');
+            Route::delete('/{travelBlogId}', 'SavedBlogController@deleteSavedBlog');
+        });
     });
 
 });
