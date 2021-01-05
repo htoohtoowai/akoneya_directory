@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\SavedBlogRepository;
-use App\Http\Requests\CreateSavedBlogRequest;
 
 class SavedBlogController extends Controller
 {
@@ -15,10 +14,9 @@ class SavedBlogController extends Controller
         $this->perPage = config('enums.perPage');
     }
 
-    public function createSavedBlog(CreateSavedBlogRequest $request)
+    public function saveBlog(Request $request, $blogId)
     {
-        $clientUserId = $request->auth_user_id;
-        return $this->savedRepo->createSavedBlog($request, $clientUserId);
+        return $this->savedRepo->saveBlog($blogId, $request->auth_user_id);
     }
 
     public function getSavedBlogList(Request $request)

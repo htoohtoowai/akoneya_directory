@@ -25,25 +25,25 @@ class SavedBlogRepository
         $this->disableDeletedStatus = config('enums.disableDeletedStatus');
     }
 
-    public function createSavedBlog($request, $clientUserId)
+    public function saveBlog($blogId, $clientUserId)
     {
-        $travelBlog = $this->travelBlogModel->where($this->deleteStatus, $this->disableDeletedStatus)->find($request->blogId);
-        
+        $travelBlog = $this->travelBlogModel->where($this->deleteStatus, $this->disableDeletedStatus)->find($blogId);
+       
         if (!$travelBlog) {
-            throw new NotFoundException(trans($this->itemNotFoundMsg));
+            throw new NotFoundException(trans('message.notFoundMsg'));
         }
 
-        $savedBlogInfo = $this->savedModel->where([[$this->clientUserId, $clientUserId],[$this->travelBlogId, $request->blogId]])->first();
+        $savedBlogInfo = $this->savedModel->where([[$this->clientUserId, $clientUserId],[$this->travelBlogId, $blogId]])->first();
        
         if (empty($savedBlogInfo)) {
 
             $this->savedModel->create([
                 $this->clientUserId => $clientUserId,
-                $this->shoppingFeedId => $request->blogId,
+                $this->travelBlogId => $blogId,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
         }
-        return $this->responseRepo->successResponse(null, $this->responseRepo->createStatusCode, trans('message.saveSuccessMsg'));
+        return $this->responseRepo->successResponse(null, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
     public function getSavedBlogList($request, $perPage)
@@ -73,7 +73,6 @@ class SavedBlogRepository
                 
                 $savedBlogInfo->clientUserInfo = $this->personalInfoModel->where($this->clientUserId, $savedBlogInfo->travelBlogInfo->client_user_id)->first();
                                
-                // $savedBlogInfo->shoppingFeedMedia = $this->shoppingMediaModel->where($this->shoppingFeedId, $savedProductInfo->shopping_feed_id)->first();
             }
         }
         return $this->responseRepo->successResponse(new SavedBlogListCollection($savedBlogInfos, $this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
@@ -82,8 +81,8 @@ class SavedBlogRepository
     public function deleteSavedBlog($travelBlogId, $clientUserId)
     {
         $savedTravelBlogInfos = $this->savedModel->where([[$this->travelBlogId, $travelBlogId],[$this->clientUserId, $clientUserId]])->first();
-      
-        if (empty($savedProductInfos)) {
+        
+        if (empty($savedTravelBlogInfos)) {
             return $this->responseRepo->failResponse(null, $this->responseRepo->notFoundStatusCode, trans('message.notFoundMsg'));
         }
        

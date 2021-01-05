@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class SaveBlogListCollection extends ResourceCollection
+class SavedBlogListCollection extends ResourceCollection
 {
     private $pagination;
     private $nextId;

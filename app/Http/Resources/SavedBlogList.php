@@ -18,7 +18,7 @@ class SavedBlogList extends JsonResource
             'savedBlogId' => $this->id,
             'blogId' => $this->travelBlogInfo->id,
             'title' => $this->travelBlogInfo->title,
-            'photo' => $this->main_image ? getFileUrlFromAkoneyaMedia($this->main_image) : "",
+            'photo' => $this->travelBlogInfo->main_image ? getFileUrlFromAkoneyaMedia($this->travelBlogInfo->main_image) : "",
         ];
     }
 }

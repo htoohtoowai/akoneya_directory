@@ -5,6 +5,7 @@ class ResponseRepository
 {
     public function __construct()
     {
+        $this->createStatusCode = config('http_status.created');
         $this->successStatusCode = config('http_status.success');
         $this->badRequestStatusCode = config('http_status.badRequest');
         $this->notFoundStatusCode = config('http_status.badRequest');
