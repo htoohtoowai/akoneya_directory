@@ -22,12 +22,12 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
         Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
         Route::get('holidays', 'HolidayController@getHolidays');
 
+        
+        Route::group(['prefix' => 'travelBlogs'], function () {
+            Route::get('/', 'TravelBlogController@getTravelBlogList');
+            Route::get('/{id}', 'TravelBlogController@getDetail');
+        });
         Route::group(['middleware' => 'authenticate.to.uaa'], function () {
-            Route::group(['prefix' => 'travelBlogs'], function () {
-                Route::get('/', 'TravelBlogController@getTravelBlogList');
-                Route::get('/{id}', 'TravelBlogController@getDetail');
-            });
-
             Route::group(['prefix' => 'savedTravelBlog'], function () {
                 Route::get('/', 'SavedBlogController@getSavedBlogList');
                 Route::delete('/{travelBlogId}', 'SavedBlogController@deleteSavedBlog');
