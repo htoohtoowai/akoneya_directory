@@ -22,14 +22,14 @@ class SavedBlogTest extends TestCase
     public function testSaveTravelBlogSuccessfully()
     {
         $travelBlogId = $this->travelBlog->id;
-        $response = $this->get("api/v1.0/savedTravelBlog/travelBlogs/$travelBlogId/save",$this->headers);
+        $response = $this->get("api/v1.0/travelBlogs/$travelBlogId/save", $this->headers);
         $response->assertOk();
         $response->assertJson($this->successJson(null));
     }
 
     public function testSaveTravelBlogFailWhenBlogIdIsInvalid()
     {
-        $response = $this->get("api/v1.0/savedTravelBlog/travelBlogs/22215654556/save", $this->headers);
+        $response = $this->get("api/v1.0/travelBlogs/22215654556/save", $this->headers);
         $response->assertStatus($this->badRequestStatusCode);
         $response->assertJson($this->failedJson(null));
     }

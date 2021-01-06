@@ -28,20 +28,14 @@ class TravelBlogRepository extends BaseRepository
 
         if ($nextId != ""  && $nextId != 'null') {
             $travelBlogInformationQuery = TravelBlog::filter($filter);
-
             if ($nextId != 0) {
-                $nextData = TravelBlog::find($nextId);
-                
-                if ($nextData) {
-                    $travelBlogInformationQuery = $travelBlogInformationQuery->where('title', ">=", $nextData->title);
-                }
+                $travelBlogInformationQuery = $travelBlogInformationQuery->where('id', '<=', $nextId);
             }
-           
-            $travelBlogInformation = $travelBlogInformationQuery->orderBy('title')
+            $travelBlogInformation = $travelBlogInformationQuery->orderBy('id', 'DESC')
                                     ->limit($this->perPage+1)
                                     ->where('deleted_status', $this->disableDeletedStatus)
                                     ->get();
-          
+
             $paginationCount = $travelBlogInformation->count();
             if ($paginationCount > $this->perPage) {
                 $this->nextId  = $travelBlogInformation[$this->perPage]->id;

@@ -11,9 +11,12 @@ use App\Http\Resources\SavedBlogListCollection;
 
 class SavedBlogRepository
 {
-    public function __construct(TravelSavedBlog $savedModel, PersonalInformation $personalInfoModel, TravelBlog $travelBlogModel,
-                                ResponseRepository $responseRepo)
-    {
+    public function __construct(
+        TravelSavedBlog $savedModel,
+        PersonalInformation $personalInfoModel,
+        TravelBlog $travelBlogModel,
+        ResponseRepository $responseRepo
+    ) {
         $this->savedModel = $savedModel;
         $this->personalInfoModel = $personalInfoModel;
         $this->travelBlogModel = $travelBlogModel;
@@ -36,7 +39,6 @@ class SavedBlogRepository
         $savedBlogInfo = $this->savedModel->where([[$this->clientUserId, $clientUserId],[$this->travelBlogId, $blogId]])->first();
        
         if (empty($savedBlogInfo)) {
-
             $this->savedModel->create([
                 $this->clientUserId => $clientUserId,
                 $this->travelBlogId => $blogId,
@@ -48,31 +50,26 @@ class SavedBlogRepository
 
     public function getSavedBlogList($request, $perPage)
     {
-        if (request()->nextId == "" || request()->nextId == 'null'){
+        if (request()->nextId == "" || request()->nextId == 'null') {
             $savedBlogInfos = [];
         } else {
-            $savedBlogInfos = $this->savedModel->where(function ($query) use ($request) {
-                                                            if( $request['nextId'] != 0 ){
-                                                                $query->where('id', '<=', $request['nextId']);
-                                                            }
-                                                        $query->where($this->clientUserId, $request['auth_user_id']);
-                                                    })->orderBy('id', 'DESC')->limit($perPage + 1)->get();
-         
+            $savedBlogInfos = $this->savedModel->where($this->clientUserId, $request['auth_user_id']);
+            if ($request['nextId'] != 0) {
+                $savedBlogInfos = $savedBlogInfos->where('id', '<=', $request['nextId']);
+            }
+            $savedBlogInfos = $savedBlogInfos->orderBy('id', 'DESC')->limit($perPage + 1)->get();
             $totalCount = $savedBlogInfos->count();
 
             if ($totalCount > $perPage) {
-
                 $this->nextId = $savedBlogInfos[$perPage]->id;
 
                 unset($savedBlogInfos[$totalCount - 1]);
             }
 
             foreach ($savedBlogInfos as $savedBlogInfo) {
-
                 $savedBlogInfo->travelBlogInfo = $this->travelBlogModel->where('id', $savedBlogInfo->travel_blog_id)->first();
                 
                 $savedBlogInfo->clientUserInfo = $this->personalInfoModel->where($this->clientUserId, $savedBlogInfo->travelBlogInfo->client_user_id)->first();
-                               
             }
         }
         return $this->responseRepo->successResponse(new SavedBlogListCollection($savedBlogInfos, $this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
