@@ -1,3 +1,4 @@
+
 <?php
 
 return [
@@ -19,5 +20,6 @@ return [
     'township_name' => "Hlaing",
     'service_name' => "Excel Palace",
     'address' => "Eiusmod elit est re",
+    'emailLoginType' => "email",
     'phone' => "+1 (998) 239-9286"
 ];
