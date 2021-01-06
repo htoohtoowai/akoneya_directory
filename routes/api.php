@@ -29,10 +29,10 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
             });
 
             Route::group(['prefix' => 'savedTravelBlog'], function () {
-                Route::get('travelBlogs/{id}/save', 'SavedBlogController@saveBlog');
                 Route::get('/', 'SavedBlogController@getSavedBlogList');
                 Route::delete('/{travelBlogId}', 'SavedBlogController@deleteSavedBlog');
             });
+            Route::get('travelBlogs/{id}/save', 'SavedBlogController@saveBlog');
         });
     });
 });
