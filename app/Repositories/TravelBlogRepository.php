@@ -20,6 +20,7 @@ class TravelBlogRepository extends BaseRepository
         $this->disableDeletedStatus = config('enums.disableDeletedStatus');
         $this->perPage = config('enums.perPage');
         $this->nextId = null;
+        $this->requestAuthEmptyStatus = 0;
     }
 
     public function getTravelBlogList($filter, $nextId, $clientUserId)
@@ -63,5 +64,24 @@ class TravelBlogRepository extends BaseRepository
         $traveBlogInfo['isSaved'] = (TravelSavedBlog::where('client_user_id', $clientUserId)->where('travel_blog_id', $id)->first() != null);
 
         return $this->responseRepo->successResponse(new TravelBlogDetailResource($travelBlog), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+    }
+    
+    public function checkAuthExistOrNot($request)
+    {
+        
+        if (empty($request->header('Authorization'))) {
+            $clientUserId = $this->requestAuthEmptyStatus;
+        } else {
+            $clientUserId = $this->getUserIdFromToken($request->header('Authorization'));
+        }
+        return $clientUserId;
+    }
+    public function getUserIdFromToken($token)
+    {
+        $encodedStr = explode('.', $token);
+        $str = $encodedStr[1];
+        $decodedStr =  base64_decode($str);
+        $getArray = json_decode($decodedStr, true);
+        return $getArray['sub'];
     }
 }

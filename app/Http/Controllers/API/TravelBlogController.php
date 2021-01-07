@@ -16,10 +16,12 @@ class TravelBlogController extends Controller
     }
     public function getTravelBlogList(Request $request)
     {
-        return $this->travelBlogRepo->getTravelBlogList($this->travelBlogFilter, $request->nextId, $request->auth_user_id);
+        $clientUserId = $this->travelBlogRepo->checkAuthExistOrNot($request);
+        return $this->travelBlogRepo->getTravelBlogList($this->travelBlogFilter, $request->nextId, $clientUserId);
     }
     public function getDetail($id, Request $request)
     {
-        return $this->travelBlogRepo->getDetail($id, $request->auth_user_id);
+        $clientUserId = $this->travelBlogRepo->checkAuthExistOrNot($request);
+        return $this->travelBlogRepo->getDetail($id, $clientUserId);
     }
 }
