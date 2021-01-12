@@ -17,10 +17,10 @@ class CreateTravelBlogsTable extends Migration
             $table->id();
             $table->unsignedInteger('zone_id')->nullable();
             $table->string('title', 225);
-            $table->string('overview', 500);
-            $table->string('history', 500);
+            $table->text('overview');
+            $table->text('history');
+            $table->text('check_in_point');
             $table->string('main_image', 225);
-            $table->string('check_in_point', 500);
             $table->boolean('deleted_status')->default('0');
         });
     }
