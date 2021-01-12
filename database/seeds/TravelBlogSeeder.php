@@ -24,7 +24,7 @@ class TravelBlogSeeder extends Seeder
 
                         'main_image' => 'directories/travelBlogs/1602040175.png',
 
-                        'check_in_point' => '<p> Shwe Dagon Pagoda -</p> <p>As well as building naval vessels at its facility at Vlissingen-East in the Netherlands, DSNS can work with yards anywhere in the world.Don’t ever play yourself. You should never complain, complaining is a weak emotion, you got life.</p> <img src="http://dev1.tamrontech.com/akoneya/media/assets/news/sliders/dollar.jpg"> <p>Fan luv. The key to success is to keep your head above the water, never give up. Eliptical talk. A major key, never panic. Don’t panic, when it gets crazy and rough, don’t panic, stay calm.</p>'
+                        'check_in_point' => '<p> Shwe Dagon Pagoda -</p> <p>As well as building naval vessels at its facility at Vlissingen-East in the Netherlands, DSNS can work with yards anywhere in the world.Don’t ever play yourself. You should never complain, complaining is a weak emotion, you got life.</p> <img src="http://media1.tamrontech.com/akoneya/media/assets/news/sliders/dollar.jpg"> <p>Fan luv. The key to success is to keep your head above the water, never give up. Eliptical talk. A major key, never panic. Don’t panic, when it gets crazy and rough, don’t panic, stay calm.</p>'
 
                 ),
                 1 =>
@@ -39,7 +39,7 @@ class TravelBlogSeeder extends Seeder
 
                         'main_image' => 'directories/travelBlogs/1602040175.png',
 
-                        'check_in_point' => '<p> Bagan -</p><p>Shipbuilding Refit and Conversion department responds to global market demands by offering flexibility and unbeatable.Don’t ever play yourself. You should never complain, complaining is a weak emotion, you got life, we breathing, we blessed.</p><img src="http://dev1.tamrontech.com/akoneya/media/assets/news/sliders/dollar.jpg">
+                        'check_in_point' => '<p> Bagan -</p><p>Shipbuilding Refit and Conversion department responds to global market demands by offering flexibility and unbeatable.Don’t ever play yourself. You should never complain, complaining is a weak emotion, you got life, we breathing, we blessed.</p><img src="http://media1.tamrontech.com/akoneya/media/assets/news/sliders/dollar.jpg">
                         <p>Fan luv. The key to success is to keep your head above the water, never give up. Eliptical talk. A major key, never panic. Don’t panic</p>'
 
                 ),
@@ -54,7 +54,7 @@ class TravelBlogSeeder extends Seeder
 
                         'main_image' => 'directories/travelBlogs/1602040175.png',
 
-                       'check_in_point' => '<p> Kyaik Htee Yoe -</p><p>striking figure in a Johnny Cash-like ensemble of black boots, black jeans, black shirt and black overcoat, but Ravi DeRossi remains enough of an unknown that customers pay no attention to him as he gives a tour of his various bars in the East Village. There are a lot of bars, by the way. Over the course of a decade or so.</p><img src="http://dev1.tamrontech.com/akoneya/media/assets/news/sliders/dollar.jpg"><p>Lorem Khaled Ipsum is a major key to success. They never said winning was easy. Some people can’t handle success, I can. You do know, you do know that they don’t want you to have lunch. I’m keeping it real with you, so what you going do is have lunch.</p>'
+                       'check_in_point' => '<p> Kyaik Htee Yoe -</p><p>striking figure in a Johnny Cash-like ensemble of black boots, black jeans, black shirt and black overcoat, but Ravi DeRossi remains enough of an unknown that customers pay no attention to him as he gives a tour of his various bars in the East Village. There are a lot of bars, by the way. Over the course of a decade or so.</p><img src="http://media1.tamrontech.com/akoneya/media/assets/news/sliders/dollar.jpg"><p>Lorem Khaled Ipsum is a major key to success. They never said winning was easy. Some people can’t handle success, I can. You do know, you do know that they don’t want you to have lunch. I’m keeping it real with you, so what you going do is have lunch.</p>'
 
                 ),
             )
