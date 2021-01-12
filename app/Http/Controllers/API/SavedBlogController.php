@@ -11,7 +11,6 @@ class SavedBlogController extends Controller
     public function __construct(SavedBlogRepository $savedRepo)
     {
         $this->savedRepo  = $savedRepo;
-        $this->perPage = config('enums.perPage');
     }
 
     public function saveBlog(Request $request, $blogId)
@@ -21,7 +20,7 @@ class SavedBlogController extends Controller
 
     public function getSavedBlogList(Request $request)
     {
-        return $this->savedRepo->getSavedBlogList($request, $this->perPage);
+        return $this->savedRepo->getSavedBlogList($request);
     }
 
     public function deleteSavedBlog($travelBlogId, Request $request)

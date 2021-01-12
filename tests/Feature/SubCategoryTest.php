@@ -37,19 +37,12 @@ class SubCategoryTest extends TestCase
         ));
     }
 
-    public function testEmptySubCategoryByCategoryId()
+    public function testSubCategoryByCategoryIdFailWhenCategoryIdIsInvalid()
     {
         $categoryId = 999;
         
         $response = $this->get("/api/v1.0/categories/$categoryId/subCategories?nextId=0");
-        $response->assertOk();
-        $response->assertJson($this->successJson(
-            [
-                "subCategories" => [],
-                "pagination" => [
-                    "nextId" => null
-                ]
-            ]
-        ));
+        $response->assertStatus($this->badRequestStatusCode);
+        $response->assertJson($this->failedJson(null));
     }
 }

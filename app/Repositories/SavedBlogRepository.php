@@ -9,7 +9,7 @@ use App\Repositories\ShoppingFeedRepository;
 use App\Exceptions\NotFoundException;
 use App\Http\Resources\SavedBlogListCollection;
 
-class SavedBlogRepository
+class SavedBlogRepository extends BaseRepository
 {
     public function __construct(
         TravelSavedBlog $savedModel,
@@ -25,6 +25,7 @@ class SavedBlogRepository
         $this->clientUserId = 'client_user_id';
         $this->travelBlogId = 'travel_blog_id';
         $this->deleteStatus = 'deleted_status';
+        $this->perPage = config('enums.perPage');
         $this->disableDeletedStatus = config('enums.disableDeletedStatus');
     }
 
@@ -48,31 +49,26 @@ class SavedBlogRepository
         return $this->responseRepo->successResponse(null, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
-    public function getSavedBlogList($request, $perPage)
+    public function getSavedBlogList($request)
     {
-        if (request()->nextId == "" || request()->nextId == 'null') {
-            $savedBlogInfos = [];
-        } else {
-            $savedBlogInfos = $this->savedModel->where($this->clientUserId, $request['auth_user_id']);
-            if ($request['nextId'] != 0) {
-                $savedBlogInfos = $savedBlogInfos->where('id', '<=', $request['nextId']);
-            }
-            $savedBlogInfos = $savedBlogInfos->orderBy('id', 'DESC')->limit($perPage + 1)->get();
-            $totalCount = $savedBlogInfos->count();
+        $savedBlogInfos = [];
+        $savedBlogList = new SavedBlogListCollection($savedBlogInfos, $this->nextId);
 
-            if ($totalCount > $perPage) {
-                $this->nextId = $savedBlogInfos[$perPage]->id;
-
-                unset($savedBlogInfos[$totalCount - 1]);
-            }
-
-            foreach ($savedBlogInfos as $savedBlogInfo) {
+        if ($request->nextId != "" && $request->nextId != 'null') {
+       
+            $savedBlogQuery = $this->savedModel->where($this->clientUserId, $request->auth_user_id);
+            
+            $savedBlogInfos = $this->getDataByNextId('id', $request->nextId, $savedBlogQuery);
+        
+            foreach ($savedBlogInfos['result'] as $savedBlogInfo) {
                 $savedBlogInfo->travelBlogInfo = $this->travelBlogModel->where('id', $savedBlogInfo->travel_blog_id)->first();
                 
                 $savedBlogInfo->clientUserInfo = $this->personalInfoModel->where($this->clientUserId, $savedBlogInfo->travelBlogInfo->client_user_id)->first();
             }
+            $savedBlogList = new SavedBlogListCollection($savedBlogInfos['result'], $savedBlogInfos['nextId']);
         }
-        return $this->responseRepo->successResponse(new SavedBlogListCollection($savedBlogInfos, $this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+
+        return $this->responseRepo->successResponse($savedBlogList, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
     public function deleteSavedBlog($travelBlogId, $clientUserId)

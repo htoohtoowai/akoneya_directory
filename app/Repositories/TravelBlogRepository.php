@@ -26,30 +26,27 @@ class TravelBlogRepository extends BaseRepository
     public function getTravelBlogList($filter, $nextId, $clientUserId)
     {
         $travelBlogInformation = [];
+        $travelBlogInformationList = new TravelBlogResourceCollection($travelBlogInformation, $this->nextId);
 
-        if ($nextId != ""  && $nextId != 'null') {
-            $travelBlogInformationQuery = TravelBlog::filter($filter);
-            if ($nextId != 0) {
-                $travelBlogInformationQuery = $travelBlogInformationQuery->where('id', '<=', $nextId);
-            }
-            $travelBlogInformation = $travelBlogInformationQuery->orderBy('id', 'DESC')
-                                    ->limit($this->perPage+1)
-                                    ->where('deleted_status', $this->disableDeletedStatus)
-                                    ->get();
-
-            $paginationCount = $travelBlogInformation->count();
-            if ($paginationCount > $this->perPage) {
-                $this->nextId  = $travelBlogInformation[$this->perPage]->id;
-                
-                unset($travelBlogInformation[$paginationCount - 1]);
-            }
+        if ($nextId != "" && $nextId != 'null') {
         
-            foreach ($travelBlogInformation as $key => $value) {
-                $travelBlogInformation[$key]['isSaved'] = (TravelSavedBlog::where('client_user_id', $clientUserId)->where('travel_blog_id', $value['id'])->first() != null);
+            $travelBlogInformationQuery = TravelBlog::filter($filter)->where('deleted_status', $this->disableDeletedStatus);
+
+            $travelBlogInformation = $this->getDataByNextId('id', $nextId, $travelBlogInformationQuery);
+         
+            foreach ($travelBlogInformation['result'] as $value) {
+                $value->isSaved = $this->isSavedTravelBlog($clientUserId, $value->id);
             }
+
+            $travelBlogInformationList = new TravelBlogResourceCollection($travelBlogInformation['result'], $travelBlogInformation['nextId']);
         }
       
-        return $this->responseRepo->successResponse(new TravelBlogResourceCollection($travelBlogInformation, $this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+        return $this->responseRepo->successResponse($travelBlogInformationList, $this->responseRepo->successStatusCode, trans('message.successMsg'));
+    }
+
+    public function isSavedTravelBlog($clientUserId, $blogId)
+    {
+        return TravelSavedBlog::where('client_user_id', $clientUserId)->where('travel_blog_id', $blogId)->first() != null;
     }
 
     public function getDetail($id, $clientUserId)
