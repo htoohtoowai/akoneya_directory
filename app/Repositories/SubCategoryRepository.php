@@ -1,16 +1,18 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\Category;
 use App\Models\SubCategory;
 use App\Repositories\ResponseRepository;
 use App\Http\Resources\SubCategoryListCollection;
 use App\Repositories\ServiceRepository;
+use App\Exceptions\NotFoundException;
 
 class SubCategoryRepository extends BaseRepository
 {
-    public function __construct(SubCategory $subCategory, ResponseRepository $responseRepo, ServiceRepository $serviceRepo)
+    public function __construct(SubCategory $subCategoryModel, ResponseRepository $responseRepo, ServiceRepository $serviceRepo)
     {
-        $this->subCategory = $subCategory;
+        $this->subCategoryModel = $subCategoryModel;
         $this->successStatusCode = config('http_status.success');
         $this->badRequestStatusCode = config('http_status.badRequest');
         $this->notFoundStatusCode = config('http_status.badRequest');
@@ -32,34 +34,30 @@ class SubCategoryRepository extends BaseRepository
             $subCategoryName = 'subcategory_name_mm';
         }
 
-        $subCategories = $this->subCategoryListByLang($categoryId, $subCategoryName, $request);
-        $data = (new SubCategoryListCollection($subCategories, $this->nextId))->subCategoryName($subCategoryName);
-
+        $category = Category::where('id', $categoryId)->where('deleted_status', $this->disableDeletedStatus)->first();
+		if (!$category) {
+            throw new NotFoundException(trans('message.notFoundMsg'));
+		}
+ 
+        $data = $this->subCategoryListByLang($categoryId, $subCategoryName, $request);
         return $this->responseRepo->successResponse($data, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
-    public function subCategoryListByLang($categoryId, $categoryName, $request)
+    public function subCategoryListByLang($categoryId, $subCategoryName, $request)
     {
         $subCategories = [];
-        $subCategoryQuery = $this->subCategory->select('id', $categoryName, 'service_code')
-                                            ->where('deleted_status', $this->disableDeletedStatus)
-                                            ->where('category_id', $categoryId);
+        $subCategoryList = (new SubCategoryListCollection($subCategories, $this->nextId))->subCategoryName($subCategoryName);
 
         if ($request->nextId != "" && $request->nextId != 'null') {
-            if ($request->nextId != 0) {
-                $nextData = $this->subCategory->find($request->nextId);
-                if ($nextData) {
-                    $subCategories =$subCategoryQuery->where($categoryName, '>=', $nextData->$categoryName);
-                }
-            }
-            $subCategories = $subCategoryQuery->orderBy($categoryName)->limit($this->perPage+1)->get();
-            $paginationCount = $subCategories->count();
-            if ($paginationCount > $this->perPage) {
-                $this->nextId  = $subCategories[$this->perPage]->id;
-           
-                unset($subCategories[$paginationCount - 1]);
-            }
+
+            $subCategoryQuery = $this->subCategoryModel->select('id', $subCategoryName, 'service_code')
+                                                        ->where('deleted_status', $this->disableDeletedStatus)
+                                                        ->where('category_id', $categoryId);
+                                                        
+            $subCategories = $this->getDataOrderedByName($subCategoryName, $request->nextId, $this->subCategoryModel, $subCategoryQuery);
+
+            $subCategoryList = (new SubCategoryListCollection($subCategories['result'], $subCategories['nextId']))->subCategoryName($subCategoryName);
         }
-        return $subCategories;
+        return $subCategoryList;
     }
 }

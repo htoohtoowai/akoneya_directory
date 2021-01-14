@@ -49,33 +49,21 @@ class ServiceRepository extends BaseRepository
     {
         $totalResultCount = 0;
         $serviceInformation = [];
+        $serviceList = new ServiceResourceCollection($serviceInformation, $this->nextId, $totalResultCount);
+
         $subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
-        
+       
         if ($nextId != ""  && $nextId != 'null') {
             $totalResultCount = $serviceModel->filter($filter)->count();
-            $serviceInformationQuery = $serviceModel->filter($filter);
+            
+            $serviceInformationQuery = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus);
+            
+            $serviceInformation = $this->getDataOrderedByName('name', $nextId, $serviceModel, $serviceInformationQuery);
 
-            if ($nextId != 0) {
-                $nextData = $serviceModel->find($nextId);
-                if ($nextData) {
-                    $serviceInformationQuery = $serviceInformationQuery->where('name', ">=", $nextData->name);
-                }
-            }
-
-            $serviceInformation = $serviceInformationQuery->orderBy('name')
-                                    ->limit($this->perPage+1)
-                                    ->where('deleted_status', $this->disableDeletedStatus)
-                                    ->get();
-
-            $paginationCount = $serviceInformation->count();
-            if ($paginationCount > $this->perPage) {
-                $this->nextId  = $serviceInformation[$this->perPage]->id;
-                
-                unset($serviceInformation[$paginationCount - 1]);
-            }
+            $serviceList = new ServiceResourceCollection($serviceInformation['result'], $serviceInformation['nextId'], $totalResultCount);
         }
         
-        return $this->responseRepo->successResponse(new ServiceResourceCollection($serviceInformation, $this->nextId, $totalResultCount), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+        return $this->responseRepo->successResponse($serviceList, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 }

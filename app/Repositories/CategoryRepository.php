@@ -36,32 +36,24 @@ class CategoryRepository extends BaseRepository
             $categoryName = 'category_name_mm';
         }
       
-        $categories = $this->categoryListByLang($categoryName, $request);
-        $data = (new CategoryListCollection($categories, $this->nextId))->categoryName($categoryName);
+        $data =  $this->categoryListByLang($categoryName, $request);
         return $this->responseRepo->successResponse($data, $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 
     public function categoryListByLang($categoryName, $request)
     {
         $categories = [];
-        $categoryQuery =  $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')->where('deleted_status', $this->disableDeletedStatus);
+        $categoryList = (new CategoryListCollection($categories, $this->nextId))->categoryName($categoryName);
 
         if ($request->nextId != "" && $request->nextId != 'null') {
-            if ($request->nextId != 0) {
-                $nextData = $this->model->find($request->nextId);
-                if ($nextData) {
-                    $categories = $categoryQuery->where($categoryName, '>=', $nextData->$categoryName);
-                }
-            }
-            $categories = $categoryQuery->orderBy($categoryName)->limit($this->perPage+1)->get();
-            $paginationCount = $categories->count();
-            if ($paginationCount > $this->perPage) {
-                $this->nextId  = $categories[$this->perPage]->id;
-           
-                unset($categories[$paginationCount - 1]);
-            }
+
+            $categoryQuery =  $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')->where('deleted_status', $this->disableDeletedStatus);
+            
+            $categories = $this->getDataOrderedByName($categoryName, $request->nextId, $this->model, $categoryQuery);
+
+            $categoryList = (new CategoryListCollection($categories['result'], $categories['nextId']))->categoryName($categoryName);
         }
 
-        return $categories;
+        return $categoryList;
     }
 }
