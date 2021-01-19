@@ -31,6 +31,8 @@ return [
     ],
     'uaa_auth_service' => [
         'url' => env('UAA_AUTH_URL')
-    ]
+    ],
+    'encryptionKey' => 'ABCDEF12!ER&456EA*CDEF1&3ERD45@#',
+    'ivKey' => '1#345as887io%32@'
 
 ];
