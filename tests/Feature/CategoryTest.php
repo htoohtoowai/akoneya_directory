@@ -17,7 +17,7 @@ class CategoryTest extends TestCase
 
     public function testGetCategoryListSuccessfully()
     {
-        $response = $this->get('api/v1.0/categories?nextId=0');
+        $response = $this->get('api/v1.0/categories?nextId=0',['Accept' => 'application/json','Api-Key' => $this->apiKeyToken]);
         $response->assertOk();        
         $response->assertJson($this->successJson(
             [

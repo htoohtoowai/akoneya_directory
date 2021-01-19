@@ -18,7 +18,7 @@ class ServiceTest extends TestCase
     public function testServiceListBySubCategoryIdSuccessfully()
     {
         $subCategoryId = $this->subCategory->id;
-        $response = $this->get("/api/v1.0/subcategories/$subCategoryId/services?nextId=0");
+        $response = $this->get("/api/v1.0/subcategories/$subCategoryId/services?nextId=0",['Accept' => 'application/json','Api-Key' => $this->apiKeyToken]);
         $response->assertOk();
         $response->assertJson($this->successJson(
             [
@@ -41,7 +41,7 @@ class ServiceTest extends TestCase
     public function testServiceListBySubCategoryIdNotFound()
     {
         $subCategoryId = 999;
-        $response = $this->get("/api/v1.0/subcategories/$subCategoryId/services?nextId=0");
+        $response = $this->get("/api/v1.0/subcategories/$subCategoryId/services?nextId=0",['Accept' => 'application/json','Api-Key' => $this->apiKeyToken]);
         $response->assertStatus(config('http_status.badRequest'));
         $this->assertBadRequest($response->getStatusCode());
         $response->assertJson($this->failedJson(null));

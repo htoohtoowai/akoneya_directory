@@ -14,7 +14,7 @@ class SavedBlogTest extends TestCase
         parent::setUp();
         $this->user = $this->createUser();
         $this->token = JWTAuth::fromUser($this->user);
-        $this->headers = ['Accept' => 'application/json','Authorization' => "Bearer $this->token"];
+        $this->headers = ['Accept' => 'application/json','Authorization' => "Bearer $this->token",'Api-Key' => $this->apiKeyToken];
         $this->travelBlog = $this->createTravelBlog();
         $this->savedBlog = $this->createSavedBlog($this->travelBlog->id, $this->user->id);
     }

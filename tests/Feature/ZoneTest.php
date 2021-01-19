@@ -10,7 +10,7 @@ class ZoneTest extends TestCase
 {
     public function testZoneListSuccessfully()
     {
-        $response = $this->get('/api/v1.0/zones');
+        $response = $this->get('/api/v1.0/zones',['Accept' => 'application/json','Api-Key' => $this->apiKeyToken]);
         $response->assertStatus(200);
         $response->assertJson($this->successJson(
             [

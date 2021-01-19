@@ -54,3 +54,18 @@ if(!function_exists("str_to_24hr_format")){
 		return date("Y-m-d H:i:s", strtotime($value));
 	}
 }
+
+if (!function_exists("decryptToken")) {
+    function decryptToken($token)
+    {
+        if (!defined('AES_256_CBC')) {
+            define('AES_256_CBC', 'aes-256-cbc');
+        }
+
+        $encryption_key = Config::get('services.encryptionKey');
+
+        $iv = Config::get('services.ivKey');
+
+        return openssl_decrypt($token, AES_256_CBC, $encryption_key, 0, $iv);
+    }
+}

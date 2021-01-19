@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Artisan;
+use Carbon\Carbon;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Hotel;
@@ -27,6 +28,7 @@ abstract class TestCase extends BaseTestCase
         $this->successMsg = config('message.successMsg');
         $this->notFoundMsg = config('message.notFoundMsg');
         $this->deleteMsg = config('message.deleteSuccessMsg');
+        $this->apiKeyToken =  $this->setOpenApiAuthToken();
         $this->setUaaAuthHttpFake();
     }
     public function setUaaAuthHttpFake()
@@ -43,6 +45,17 @@ abstract class TestCase extends BaseTestCase
                 'message' => 'Success.'
             ], 200, ['Headers'])
         ]);
+    }
+    public function setOpenApiAuthToken()
+    {
+        $now = Carbon::now()->timestamp;
+
+        $token = config('openapikey.static_auth_key').'.'.$now;
+
+        if (!defined('AES_256_CBC')) {
+            define('AES_256_CBC', 'aes-256-cbc');
+        }
+        return openssl_encrypt($token, AES_256_CBC, config('services.encryptionKey'), 0, config('services.ivKey'));
     }
     public function successJson($resultJson)
     {
