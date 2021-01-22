@@ -15,7 +15,7 @@ class CreateDirectoryCategoriesTable extends Migration
     {
         if (!Schema::hasTable('directory_categories')) {
             Schema::create('directory_categories', function (Blueprint $table) {
-                $table->id();
+                $table->bigIncrements('id');
                 $table->string('category_name');
                 $table->string('category_name_mm');
                 $table->string('category_name_zh')->nullable();

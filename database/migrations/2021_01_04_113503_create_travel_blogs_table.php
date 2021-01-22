@@ -13,16 +13,19 @@ class CreateTravelBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('travel_blogs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('zone_id')->nullable();
-            $table->string('title', 225);
-            $table->text('overview');
-            $table->text('history');
-            $table->text('check_in_point');
-            $table->string('main_image', 225);
-            $table->boolean('deleted_status')->default('0');
-        });
+        if (!Schema::hasTable('travel_blogs')) {
+            Schema::create('travel_blogs', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedInteger('zone_id')->nullable();
+                $table->string('title', 225);
+                $table->text('overview');
+                $table->text('history');
+                $table->text('check_in_point');
+                $table->string('main_image', 225);
+                $table->boolean('deleted_status')->default('0');
+                $table->index(['title','zone_id']);
+            });
+        }
     }
 
     /**

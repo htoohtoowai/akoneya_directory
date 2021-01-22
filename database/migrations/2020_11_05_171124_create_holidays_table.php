@@ -13,11 +13,14 @@ class CreateHolidaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('holidays', function (Blueprint $table) {
-            $table->id();
-            $table->Datetime('date');
-            $table->text('description')->nullable();
-        });
+        if (!Schema::hasTable('holidays')) {
+            Schema::create('holidays', function (Blueprint $table) {
+                $table->id();
+                $table->datetime('date');
+                $table->text('description')->nullable();
+                $table->index(['date']);
+            });
+        }
     }
 
     /**

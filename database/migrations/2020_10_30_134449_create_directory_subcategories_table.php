@@ -15,7 +15,7 @@ class CreateDirectorySubcategoriesTable extends Migration
     {
         if (!Schema::hasTable('directory_subcategories')) {
             Schema::create('directory_subcategories', function (Blueprint $table) {
-                $table->id();
+                $table->bigIncrements('id');
                 $table->string('subcategory_name');
                 $table->string('subcategory_name_mm');
                 $table->string('subcategory_name_zh')->nullable();

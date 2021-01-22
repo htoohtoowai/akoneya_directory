@@ -13,12 +13,15 @@ class CreateTravelSavedBlogs extends Migration
      */
     public function up()
     {
-        Schema::create('travel_saved_blogs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('client_user_id');
-            $table->unsignedInteger('travel_blog_id');
-            $table->dateTime('created_at', 0);
-        });
+        if (!Schema::hasTable('travel_saved_blogs')) {
+            Schema::create('travel_saved_blogs', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('client_user_id');
+                $table->unsignedInteger('travel_blog_id');
+                $table->dateTime('created_at', 0);
+                $table->index(['client_user_id','travel_blog_id']);
+            });
+        }
     }
 
     /**
