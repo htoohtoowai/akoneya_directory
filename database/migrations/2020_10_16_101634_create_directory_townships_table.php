@@ -20,6 +20,7 @@ class CreateDirectoryTownshipsTable extends Migration
                 $table->text('township_name');
                 $table->unsignedInteger('zone_id');
                 $table->boolean('deleted_status')->default('0');
+                $table->index(['zone_id']);
             });
         }
     }

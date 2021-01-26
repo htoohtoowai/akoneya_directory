@@ -22,6 +22,7 @@ class CreateDirectoryHotelsTable extends Migration
                 $table->string('address', 225);
                 $table->string('phone',255);
                 $table->boolean('deleted_status')->default('0');
+                $table->index(['name', 'township_id','zone_id']);
             });
         }
      }

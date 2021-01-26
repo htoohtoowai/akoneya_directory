@@ -13,11 +13,13 @@ class CreateTravelBlogMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('travel_blog_media', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('travel_blog_id')->nullable();
-            $table->string('media_path', 225);
-        });
+        if (!Schema::hasTable('travel_blog_media')) {
+            Schema::create('travel_blog_media', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedInteger('travel_blog_id')->nullable();
+                $table->string('media_path', 225);
+            });
+        }
     }
 
     /**
