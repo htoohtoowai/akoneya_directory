@@ -16,7 +16,7 @@ if(!function_exists('base64ImageUploadToAkoneyaMedia')){
         $fileName = time().Str::random(6).$fileExtension;
         $mediaPath = $directoryName."/".$fileName;
 
-        if(Storage::disk('akoneya')->put($mediaPath,$file))
+        if(Storage::put($mediaPath,$file))
         {
             return $mediaPath;
         }
@@ -32,7 +32,7 @@ if(!function_exists('deleteFileFromAkoneyaMedia')) {
 
     function deleteFileFromAkoneyaMedia($filePath)
     {
-        Storage::disk('akoneya')->delete($filePath);
+        Storage::delete($filePath);
     }
 }
 
@@ -43,7 +43,7 @@ if(!function_exists('getFileUrlFromAkoneyaMedia')){
 
     function getFileUrlFromAkoneyaMedia($filePath)
     {
-        return Storage::disk("akoneya")->url($filePath);
+        return Storage::url($filePath);
     }
 }
 
