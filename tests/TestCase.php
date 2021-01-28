@@ -66,6 +66,15 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
+    public function successJsonForSavedBlog($successMsg)
+    {
+        return [
+            "result" => null,
+            "statusCode" => $this->successStatusCode,
+            "message" =>  $successMsg
+        ];
+    }
+
     public function deleteSuccessJson($resultJson)
     {
         return [
