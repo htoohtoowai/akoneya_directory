@@ -46,7 +46,7 @@ class SavedBlogRepository extends BaseRepository
                 'created_at' => date('Y-m-d H:i:s')
             ]);
         }
-        return $this->responseRepo->successResponse(null, $this->responseRepo->successStatusCode, trans('message.successMsg'));
+        return $this->responseRepo->successResponse(null, $this->responseRepo->successStatusCode, trans('message.saveSuccessMsg'));
     }
 
     public function getSavedBlogList($request)

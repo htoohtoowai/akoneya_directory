@@ -24,7 +24,7 @@ class SavedBlogTest extends TestCase
         $travelBlogId = $this->travelBlog->id;
         $response = $this->get("api/v1.0/travelBlogs/$travelBlogId/save", $this->headers);
         $response->assertOk();
-        $response->assertJson($this->successJson(null));
+        $response->assertJson($this->successJsonForSavedBlog(config('message.saveSuccessMsg')));
     }
 
     public function testSaveTravelBlogFailWhenBlogIdIsInvalid()
