@@ -68,7 +68,17 @@ return [
             'driver' => 'local',
             'root' => env('AKONEYA_MEDIA_STORAGE_PATH', '/media/akoneya'),
             'url' => env('AKONEYA_MEDIA_STORAGE_URL')
-        ]
+        ],
+        'alibaba-oss' => [
+            'driver' => 's3',
+            'key' => env('ALIBABA_OSS_ACCESS_KEY_ID'),
+            'secret' => env('ALIBABA_OSS_SECRET_ACCESS_KEY'),
+            'region' => env('ALIBABA_OSS_REGION'),
+            'bucket' => env('ALIBABA_OSS_BUCKET'),
+            'endpoint' => env('ALIBABA_OSS_ENDPOINT'),
+            'url' => env('ALIBABA_OSS_URL'),
+            'visibility' => 'public',
+        ],
 
     ],
 
