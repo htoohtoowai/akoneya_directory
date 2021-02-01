@@ -55,7 +55,7 @@ class ServiceRepository extends BaseRepository
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
        
         if ($nextId != ""  && $nextId != 'null') {
-            $totalResultCount = $serviceModel->filter($filter)->count();
+            $totalResultCount = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus)->count();
             
             $serviceInformationQuery = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus);
             
