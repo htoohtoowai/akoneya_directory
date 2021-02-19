@@ -14,6 +14,7 @@ use App\Models\Holiday;
 use App\Models\Township;
 use App\Models\TravelBlog;
 use App\Models\TravelSavedBlog;
+use App\Models\PostalCode;
 use App\User;
 
 abstract class TestCase extends BaseTestCase
@@ -184,6 +185,16 @@ abstract class TestCase extends BaseTestCase
             'client_user_id' => $clientUserId,
             'travel_blog_id' => $travelBlogId,
             'created_at' => date("Y-m-d H:i:s")
+        ]);
+    }
+
+    public function createPostalCode($zoneId, $townshipId)
+    {
+        return PostalCode::create([
+            'zone_id' => $zoneId,
+            'directory_township_id' => $townshipId,
+            'area_name' => config('mock_data.areaName'),
+            'area_postal_code' => config('mock_data.postalCode')
         ]);
     }
 
