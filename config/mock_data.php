@@ -18,6 +18,8 @@ return [
     'description'=>"Diwali/Deepavali",
     'township_id' => 1,
     'township_name' => "Hlaing",
+    'areaName' => "Kaba Aye",
+    'postalCode' => 11061,
     'service_name' => "Excel Palace",
     'address' => "Eiusmod elit est re",
     'emailLoginType' => "email",
