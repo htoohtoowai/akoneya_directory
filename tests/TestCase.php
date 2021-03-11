@@ -16,7 +16,7 @@ use App\Models\TravelBlog;
 use App\Models\TravelSavedBlog;
 use App\Models\PostalCode;
 use App\User;
-
+use App\Models\FoodBlogCategory;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, DatabaseMigrations;
@@ -196,6 +196,13 @@ abstract class TestCase extends BaseTestCase
             'area_name' => config('mock_data.areaName'),
             'area_postal_code' => config('mock_data.postalCode')
         ]);
+    }
+
+    public function createFoodBlogCategory()
+    {
+       return FoodBlogCategory::create([
+            'name' => config('mock_data.foodBlogCategory')
+       ]);
     }
 
     /**

@@ -23,5 +23,6 @@ return [
     'service_name' => "Excel Palace",
     'address' => "Eiusmod elit est re",
     'emailLoginType' => "email",
-    'phone' => "+1 (998) 239-9286"
+    'phone' => "+1 (998) 239-9286",
+    'foodBlogCategory' => 'Vegetable'
 ];
