@@ -40,6 +40,8 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
                     Route::get('/', 'FoodBlogController@getFoodBlogList');
                 });
             });
+
+            Route::get('foodBlogs/categories', 'FoodBlogCategory@getAllCategories');
         });
 
         Route::group(['middleware' => 'authenticate.to.uaa'], function () {
