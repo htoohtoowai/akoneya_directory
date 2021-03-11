@@ -35,6 +35,17 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
                     Route::delete('/{travelBlogId}', 'SavedBlogController@deleteSavedBlog');
                 });
                 Route::get('travelBlogs/{id}/save', 'SavedBlogController@saveBlog');
+
+                Route::group(['prefix' => 'foodBlogs'], function () {
+                    Route::get('/', 'FoodBlogController@getFoodBlogList');
+                });
+            });
+        });
+
+        Route::group(['middleware' => 'authenticate.to.uaa'], function () {
+            Route::group(['prefix' => 'foodBlogs'], function () {
+                Route::get('/', 'FoodBlogController@getFoodBlogList');
+                Route::get('/{id}', 'FoodBlogController@getFoodBlogDetail');
             });
         });
     });
