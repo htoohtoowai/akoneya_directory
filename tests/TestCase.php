@@ -14,9 +14,13 @@ use App\Models\Holiday;
 use App\Models\Township;
 use App\Models\TravelBlog;
 use App\Models\TravelSavedBlog;
+use App\Models\FoodBlog;
+use App\Models\FoodBlogCategory;
+use App\Models\FoodBlogMedia;
+use App\Models\FoodSavedBlog;
 use App\Models\PostalCode;
 use App\User;
-use App\Models\FoodBlogCategory;
+
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, DatabaseMigrations;
@@ -188,6 +192,40 @@ abstract class TestCase extends BaseTestCase
         ]);
     }
 
+    public function createFoodBlogCategory()
+    {
+        return FoodBlogCategory::create([
+            'name' => config('mock_data.foodCategoryName')
+        ]);
+    }
+    public function createFoodBlog($categoryId)
+    {
+        return FoodBlog::create([
+            'title' => config('mock_data.service_name'),
+            'category_id' => $categoryId,
+            'ingredients' => config('mock_data.ingredients'),
+            'directions' => config('mock_data.directions'),
+            'note' => config('mock_data.note'),
+            'credit' => config('mock_data.credit')
+        ]);
+    }
+
+    public function createFoodBlogMedia($foodId)
+    {
+        return FoodBlogMedia::create([
+            'food_id' => $foodId,
+            'media_path' => config('mock_data.fakeLogo'),
+        ]);
+    }
+
+    public function createSavedFoodBlog($clientUserId,$foodBlogId)
+    {
+        return FoodSavedBlog::create([
+            'client_user_id' => $clientUserId,
+            'food_id' => $foodBlogId
+        ]);
+    }
+
     public function createPostalCode($zoneId, $townshipId)
     {
         return PostalCode::create([
@@ -196,13 +234,6 @@ abstract class TestCase extends BaseTestCase
             'area_name' => config('mock_data.areaName'),
             'area_postal_code' => config('mock_data.postalCode')
         ]);
-    }
-
-    public function createFoodBlogCategory()
-    {
-       return FoodBlogCategory::create([
-            'name' => config('mock_data.foodBlogCategory')
-       ]);
     }
 
     /**

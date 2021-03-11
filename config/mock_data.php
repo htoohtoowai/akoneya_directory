@@ -24,5 +24,11 @@ return [
     'address' => "Eiusmod elit est re",
     'emailLoginType' => "email",
     'phone' => "+1 (998) 239-9286",
-    'foodBlogCategory' => 'Vegetable'
+    'foodCategoryName' => "Chinese Curry",
+    'ingredients' => "(12 pound) whole turkey",
+    'directions' => "Preheat oven to 350 degrees F (175 degrees C). Rinse and wash turkey. Discard the giblets, or add to pn if they are anyone's favorites.",
+    'note' => "Less ice",
+    'credit' => "Easy Cleanup"
+
+
 ];
