@@ -6,12 +6,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class FoodBlogResourceCollection extends ResourceCollection
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+    use BaseResourceCollection;
+
     public function toArray($request)
     {
         return [

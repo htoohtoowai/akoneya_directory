@@ -17,7 +17,8 @@ class FoodBlogResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'mediaUrl' => "",
+            'category' => $this->category->name,
+            'mediaUrl' =>  getFileUrlFromAkoneyaMedia($this->media()->first()->media_path),
             'isSaved' => $this->isSaved,
         ];
     }

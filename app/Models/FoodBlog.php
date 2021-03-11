@@ -14,4 +14,19 @@ class FoodBlog extends Model
     {
         return $this->belongsTo(FoodBlogCategory::class, 'category_id', 'id');
     }
+    
+    public function media()
+    {
+        return $this->hasMany(FoodBlogMedia::class, 'food_id', 'id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(FoodBlogCategory::class,'category_id','id');
+    }
+
+    public function scopeFilter($query,$filters)
+    {
+        $filters->apply($query);
+    }
 }
