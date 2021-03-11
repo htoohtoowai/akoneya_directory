@@ -47,7 +47,7 @@ class FoodBlogRepository extends BaseRepository
     {
         $foodBlogInfo = [];
         $foodBlog = FoodBlog::where('id', $id)->first();
-        if (!$travelBlog) {
+        if (!$foodBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }
         $foodBlogInfo = $foodBlog;
@@ -66,6 +66,15 @@ class FoodBlogRepository extends BaseRepository
             $clientUserId = $this->getUserIdFromToken($request->header('Authorization'));
         }
         return $clientUserId;
+    }
+
+    public function getUserIdFromToken($token)
+    {
+        $encodedStr = explode('.', $token);
+        $str = $encodedStr[1];
+        $decodedStr =  base64_decode($str);
+        $getArray = json_decode($decodedStr, true);
+        return $getArray['sub'];
     }
 
   

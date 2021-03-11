@@ -17,7 +17,7 @@ class FoodBlogDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'title'=> $this->title,
-            'category' => FoodBlogMediaResource::collection($this->category_id) ,
+            'category' => new FoodBlogCategoryResource($this->foodBlogCategory),
             'ingredient' => $this->ingredients,
             'direction' => $this->directions,
             'note' => $this->note,

@@ -9,4 +9,9 @@ class FoodBlog extends Model
     protected $table = "food";
 
     protected $guarded = [];
+
+    public function foodBlogCategory()
+    {
+        return $this->belongsTo(FoodBlogCategory::class, 'category_id', 'id');
+    }
 }
