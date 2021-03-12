@@ -28,4 +28,14 @@ class SaveFoodBlogRepository extends BaseRepository
         }
         return $this->responseRepo->successResponse(null, $this->responseRepo->successStatusCode, trans('message.saveSuccessMsg'));
     }
+    public function deleteSaveFoodBlog($foodBlogId, $authUserId)
+    {
+        $savedFoodBlog = $this->foodSavedBlogModel->where('client_user_id', $authUserId)->where('food_id', $foodBlogId)->first();
+        if (!$savedFoodBlog) {
+            throw new NotFoundException(trans('message.notFoundMsg'));
+        }
+        $savedFoodBlog->delete();
+        return $this->responseRepo->successResponse(null, $this->responseRepo->successStatusCode, trans('message.deleteSuccessMsg'));
+
+    }
 }

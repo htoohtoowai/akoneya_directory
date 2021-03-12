@@ -15,4 +15,8 @@ class SavedFoodBlogController extends Controller
     {
         return $this->saveFoodBlogRepo->saveFoodBlog($foodBlogId, $request->auth_user_id);
     }
+    public function deleteSaveFoodBlog(Request $request, $foodBlogId)
+    {
+        return $this->saveFoodBlogRepo->deleteSaveFoodBlog($foodBlogId, $request->auth_user_id);
+    }
 }

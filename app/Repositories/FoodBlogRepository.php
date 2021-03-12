@@ -7,7 +7,7 @@ use App\Models\FoodBlog;
 use App\Models\FoodSavedBlog;
 use App\Models\FoodBlogMedia;
 use App\Http\Resources\FoodBlogResourceCollection;
-// use App\Http\Resources\FoodBlogDetailResource;
+use App\Http\Resources\FoodBlogDetailResource;
 use App\Exceptions\NotFoundException;
 
 class FoodBlogRepository extends BaseRepository
@@ -17,6 +17,8 @@ class FoodBlogRepository extends BaseRepository
         $this->responseRepo = $responseRepo;
         $this->perPage = config('enums.perPage');
         $this->nextId = null;
+        $this->requestAuthEmptyStatus = 0;
+
     }
 
     public function getFoodBlogList($filter, $nextId, $clientUserId)
@@ -45,9 +47,23 @@ class FoodBlogRepository extends BaseRepository
         return FoodSavedBlog::where('client_user_id', $clientUserId)->where('food_id', $blogId)->first() != null;
     }
 
+    public function getFoodBlogDetail($id, $clientUserId)
+    {
+        $foodBlogInfo = [];
+        $foodBlog = FoodBlog::where('id', $id)->first();
+        if (!$foodBlog) {
+            throw new NotFoundException(trans('message.notFoundMsg'));
+        }
+        $foodBlogInfo = $foodBlog;
+        $foodBlogInfo['mediaList'] = FoodBlogMedia::where('food_id', $id)->get();
+        $foodBlogInfo['isSaved'] = (FoodSavedBlog::where('client_user_id', $clientUserId)->where('food_id', $id)->first() != null);
+
+        return $this->responseRepo->successResponse(new FoodBlogDetailResource($foodBlog), $this->responseRepo->successStatusCode, trans('message.successMsg'));
+    }
+    
     public function checkAuthExistOrNot($request)
     {
-        
+       
         if (empty($request->header('Authorization'))) {
             $clientUserId = $this->requestAuthEmptyStatus;
         } else {
@@ -55,6 +71,7 @@ class FoodBlogRepository extends BaseRepository
         }
         return $clientUserId;
     }
+
     public function getUserIdFromToken($token)
     {
         $encodedStr = explode('.', $token);

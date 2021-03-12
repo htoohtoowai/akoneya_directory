@@ -14,11 +14,12 @@ class FoodBlogResource extends JsonResource
      */
     public function toArray($request)
     {
+        
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'category' => $this->category->name,
-            'mediaUrl' =>  getFileUrlFromAkoneyaMedia($this->media()->first()->media_path),
+            'category' => new FoodBlogCategoryResource($this->foodBlogCategory),
+            'mediaUrl' =>  $this->media()->first() ? getFileUrlFromAkoneyaMedia($this->media()->first()->media_path) : "",
             'isSaved' => $this->isSaved,
         ];
     }
