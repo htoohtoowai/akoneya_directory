@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::group(['prefix' => 'v1.0'], function () {
-        Route::group(['middleware' => 'check.api.key'], function () {
+        // Route::group(['middleware' => 'check.api.key'], function () {
             Route::get('categories', 'CategoryController@getCategoryList');
             Route::get('categories/{id}/subCategories', 'SubCategoryController@getSubCategoryList');
             Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
@@ -37,17 +37,23 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
                 Route::get('travelBlogs/{id}/save', 'SavedBlogController@saveBlog');
 
                 Route::group(['prefix' => 'foodBlogs'], function () {
-                    Route::get('/', 'FoodBlogController@getFoodBlogList');
+                    Route::get('{id}/save', 'SavedFoodBlogController@saveFoodBlog');
                 });
+                
+
             });
+
+           
+
 
             Route::get('foodBlogs/categories', 'FoodBlogCategory@getAllCategories');
         });
 
-        Route::group(['middleware' => 'authenticate.to.uaa'], function () {
-            Route::group(['prefix' => 'foodBlogs'], function () {
-                Route::get('/', 'FoodBlogController@getFoodBlogList');
-            });
-        });
-    });
+        // Route::group(['middleware' => 'authenticate.to.uaa'], function () {
+        //     Route::group(['prefix' => 'foodBlogs'], function () {
+        //         Route::get('/', 'FoodBlogController@getFoodBlogList');
+        //         Route::get('{id}/save', 'SavedFoodBlogController@saveFoodBlog');
+        //     });
+        // });
+    // });
 });

@@ -17,7 +17,6 @@ class FoodBlogController extends Controller
     public function getFoodBlogList(Request $request)
     {
         $clientUserId = $this->foodBlogRepo->checkAuthExistOrNot($request);
-
         return $this->foodBlogRepo->getFoodBlogList($this->foodBlogFilter, $request->nextId, $clientUserId);
     }
 }
