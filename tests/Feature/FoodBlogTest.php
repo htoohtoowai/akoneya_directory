@@ -100,8 +100,38 @@ class FoodBlogTest extends TestCase
 
     public function testDeleteSavedFoodBlogSuccessfully()
     {
-        $response = $this->json('Delete', 'api/v1.0/savedFoodBlog/'.$this->createSavedFoodBlog->food_id, [], $this->header);
+        $response = $this->json('Delete', 'api/v1.0/savedFoodBlogs/'.$this->createSavedFoodBlog->food_id, [], $this->header);
         $response->assertOk();
         $response->assertJson($this->deleteSuccessJson(null));
+    }
+
+    public function testSavedFoodBlogListSuccessfully()
+    {
+        $response = $this->get("api/v1.0/savedFoodBlogs?nextId=0", $this->header);
+        $response->assertOk();
+        $response->assertJson(
+            $this->successJson(
+                [
+                    "data" =>[
+                        [
+                            "id" => $this->createSavedFoodBlog->id,
+                            "foodBlogId" => $this->createSavedFoodBlog->food_id,
+                            "title" => $this->foodBlog->title,
+                            "category" => [
+                                "id"=> $this->foodCategory->id,
+                                "name"=> $this->foodCategory->name
+                            ],
+                            "mediaUrl" => getFileUrlFromAkoneyaMedia(config('mock_data.fakeLogo'))
+                        ]
+                    ],
+                    "pagination" => [
+                        "nextId" => null
+                    ]
+                ],
+                $this->successStatusCode,
+                $this->successMsg
+                
+            )
+        );
     }
 }

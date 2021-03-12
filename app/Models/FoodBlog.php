@@ -19,7 +19,8 @@ class FoodBlog extends Model
     {
         return $this->hasMany(FoodBlogMedia::class, 'food_id', 'id');
     }
-    public function scopeFilter($query,$filters)
+
+    public function scopeFilter($query, $filters)
     {
         $filters->apply($query);
     }
