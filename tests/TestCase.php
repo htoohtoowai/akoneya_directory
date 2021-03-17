@@ -195,17 +195,28 @@ abstract class TestCase extends BaseTestCase
     public function createFoodBlogCategory()
     {
         return FoodBlogCategory::create([
-            'name' => config('mock_data.foodCategoryName')
+            'name' => config('mock_data.foodCategoryName'),
+            'name_zh' => config('mock_data.foodCategoryName'),
+            'name_mm' => config('mock_data.foodCategoryName')
+
         ]);
     }
     public function createFoodBlog($categoryId)
     {
         return FoodBlog::create([
-            'title' => config('mock_data.service_name'),
+            'title' => config('mock_data.foodTitle'),
+            'title_mm' => config('mock_data.foodTitle'),
+            'title_zh' => config('mock_data.foodTitle'),
             'category_id' => $categoryId,
             'ingredients' => config('mock_data.ingredients'),
+            'ingredients_mm' => config('mock_data.ingredients_mm'),
+            'ingredients_zh' => config('mock_data.ingredients_zh'),
             'directions' => config('mock_data.directions'),
+            'directions_mm' => config('mock_data.directions_mm'),
+            'directions_zh' => config('mock_data.directions_zh'),
             'note' => config('mock_data.note'),
+            'note_mm' => config('mock_data.note_mm'),
+            'note_zh' => config('mock_data.note_zh'),
             'credit' => config('mock_data.credit')
         ]);
     }

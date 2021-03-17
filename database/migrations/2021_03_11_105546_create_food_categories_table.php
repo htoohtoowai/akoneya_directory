@@ -16,6 +16,8 @@ class CreateFoodCategoriesTable extends Migration
         Schema::create('food_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 200);
+            $table->string('name_mm', 200);
+            $table->string('name_zh', 200);
         });
     }
 

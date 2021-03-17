@@ -17,9 +17,17 @@ class CreateFoodTable extends Migration
             $table->id();
             $table->integer('category_id');
             $table->string('title', 200);
+            $table->string('title_mm', 200);
+            $table->string('title_zh', 200);
             $table->text('ingredients', 1000);
+            $table->text('ingredients_mm', 1000);
+            $table->text('ingredients_zh', 1000);
             $table->text('directions', 1000);
+            $table->text('directions_mm', 1000);
+            $table->text('directions_zh', 1000);
             $table->string('note', 200);
+            $table->string('note_mm', 200);
+            $table->string('note_zh', 200);
             $table->string('credit', 200);
             $table->timestamps();
         });
