@@ -4,7 +4,7 @@ namespace App\Filters;
 
 class FoodBlogFilter extends Filter
 {
-    protected $filters = ['title', 'category'];
+    protected $filters = ['title', 'categoryId'];
 
     public function title($value)
     {
@@ -13,7 +13,7 @@ class FoodBlogFilter extends Filter
                             ->orwhere('title_zh', 'LIKE', "%{$value}%");
     }
 
-    public function category($value)
+    public function categoryId($value)
     {
         return $this->builder->where('category_id', $value);
     }
