@@ -28,9 +28,7 @@ class FoodBlogRepository extends BaseRepository
 
         if ($nextId != "" && $nextId != 'null') {
 
-            $foodBlogInformationQuery = FoodBlog::filter($filter);
-
-            $foodBlogInformation = $this->getDataByNextId('id', $nextId,$foodBlogInformationQuery );
+            $foodBlogInformation = $this->getDataByNextId('id', $nextId, FoodBlog::filter($filter));
                  
             foreach ($foodBlogInformation['result'] as $value) {
                 $value->isSaved = $this->isSavedFoodBlog($clientUserId, $value->id);
