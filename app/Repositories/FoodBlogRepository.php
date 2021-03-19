@@ -9,6 +9,7 @@ use App\Models\FoodBlogMedia;
 use App\Http\Resources\FoodBlogResourceCollection;
 use App\Http\Resources\FoodBlogDetailResource;
 use App\Exceptions\NotFoundException;
+use Illuminate\Http\Request;
 
 class FoodBlogRepository extends BaseRepository
 {
@@ -26,9 +27,9 @@ class FoodBlogRepository extends BaseRepository
         $foodBlogInformation = [];
         $foodBlogInformationList = new FoodBlogResourceCollection($foodBlogInformation, $this->nextId);
 
-        if ($nextId != "" && $nextId != 'null') {
+        if ($nextId != "" && $nextId != 'null' ) {
 
-            $foodBlogInformation = $this->getDataByNextId('id', $nextId, FoodBlog::filter($filter));
+            $foodBlogInformation = $this->getDataByNextId('id', $nextId,FoodBlog::filter($filter));
                  
             foreach ($foodBlogInformation['result'] as $value) {
                 $value->isSaved = $this->isSavedFoodBlog($clientUserId, $value->id);

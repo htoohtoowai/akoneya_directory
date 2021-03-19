@@ -30,6 +30,8 @@ class CreateFoodTable extends Migration
             $table->string('note_zh', 200);
             $table->string('credit', 200);
             $table->timestamps();
+            $table->index(['title', 'title_mm', 'title_zh', 'category_id']);
+
         });
     }
 
