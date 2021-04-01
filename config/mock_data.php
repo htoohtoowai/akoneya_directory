@@ -35,7 +35,8 @@ return [
     'note' => "Easy Cleanup\nIf you make this in a slow cooker, using a slow cooker\n liner can make cleanup easier.",
     'note_mm' => "လွယ်ကူရှင်းလင်းရေး\nအကယ်၍ သင်သည်ဤအရာကိုနှေးကွေးသော cooker တစ်ခုဖြင့်ပြုလုပ်ပါကနှေးသော cooker တစ်ခုကိုအသုံးပြုပါ\n ကှနျ့ cleanup ပိုမိုလွယ်ကူစေနိုင်သည်။",
     'note_zh' => "轻松清理\n如果您在慢炖锅中烹饪，请使用慢炖锅\n 衬里可以使清理更加容易。",
-    'credit' => "Easy Cleanup"
+    'credit' => "Easy Cleanup",
+    'publish_status'=> 1
 
 
 ];

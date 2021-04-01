@@ -19,6 +19,7 @@ class FoodBlogRepository extends BaseRepository
         $this->perPage = config('enums.perPage');
         $this->nextId = null;
         $this->requestAuthEmptyStatus = 0;
+        $this->publishStatus = 1;
 
     }
 
@@ -29,7 +30,7 @@ class FoodBlogRepository extends BaseRepository
 
         if ($nextId != "" && $nextId != 'null' ) {
 
-            $foodBlogInformation = $this->getDataByNextId('id', $nextId,FoodBlog::filter($filter));
+            $foodBlogInformation = $this->getDataByNextId('id', $nextId,FoodBlog::filter($filter)->where('publish_status', $this->publishStatus));
                  
             foreach ($foodBlogInformation['result'] as $value) {
                 $value->isSaved = $this->isSavedFoodBlog($clientUserId, $value->id);
@@ -49,7 +50,7 @@ class FoodBlogRepository extends BaseRepository
     public function getFoodBlogDetail($id, $clientUserId)
     {
         $foodBlogInfo = [];
-        $foodBlog = FoodBlog::where('id', $id)->first();
+        $foodBlog = FoodBlog::where('id', $id)->where('publish_status', $this->publishStatus)->first();
         if (!$foodBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }
