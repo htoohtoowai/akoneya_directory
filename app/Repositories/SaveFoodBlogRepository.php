@@ -14,11 +14,13 @@ class SaveFoodBlogRepository extends BaseRepository
         $this->responseRepo = $responseRepo;
         $this->nextId = null;
         $this->perPage = config('enums.perPage');
+        $this->publishStatus = 1;
+
 
     }
     public function saveFoodBlog($foodBlogId, $authUserId)
     {
-        $foodBlog = FoodBlog::where('id', $foodBlogId)->first();
+        $foodBlog = FoodBlog::where('id', $foodBlogId)->where('publish_status', $this->publishStatus)->first();
         if (!$foodBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }
