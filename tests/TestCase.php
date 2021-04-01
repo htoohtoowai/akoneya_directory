@@ -217,6 +217,7 @@ abstract class TestCase extends BaseTestCase
             'note' => config('mock_data.note'),
             'note_mm' => config('mock_data.note_mm'),
             'note_zh' => config('mock_data.note_zh'),
+            'publish_status' => config('mock_data.publish_status'),
             'credit' => config('mock_data.credit')
         ]);
     }
