@@ -14,6 +14,11 @@ use App\Models\Holiday;
 use App\Models\Township;
 use App\Models\TravelBlog;
 use App\Models\TravelSavedBlog;
+use App\Models\FoodBlog;
+use App\Models\FoodBlogCategory;
+use App\Models\FoodBlogMedia;
+use App\Models\FoodSavedBlog;
+use App\Models\PostalCode;
 use App\User;
 
 abstract class TestCase extends BaseTestCase
@@ -184,6 +189,62 @@ abstract class TestCase extends BaseTestCase
             'client_user_id' => $clientUserId,
             'travel_blog_id' => $travelBlogId,
             'created_at' => date("Y-m-d H:i:s")
+        ]);
+    }
+
+    public function createFoodBlogCategory()
+    {
+        return FoodBlogCategory::create([
+            'name' => config('mock_data.foodCategoryName'),
+            'name_zh' => config('mock_data.foodCategoryName'),
+            'name_mm' => config('mock_data.foodCategoryName')
+
+        ]);
+    }
+    public function createFoodBlog($categoryId)
+    {
+        return FoodBlog::create([
+            'title' => config('mock_data.foodTitle'),
+            'title_mm' => config('mock_data.foodTitle'),
+            'title_zh' => config('mock_data.foodTitle'),
+            'category_id' => $categoryId,
+            'ingredients' => config('mock_data.ingredients'),
+            'ingredients_mm' => config('mock_data.ingredients_mm'),
+            'ingredients_zh' => config('mock_data.ingredients_zh'),
+            'directions' => config('mock_data.directions'),
+            'directions_mm' => config('mock_data.directions_mm'),
+            'directions_zh' => config('mock_data.directions_zh'),
+            'note' => config('mock_data.note'),
+            'note_mm' => config('mock_data.note_mm'),
+            'note_zh' => config('mock_data.note_zh'),
+            'publish_status' => config('mock_data.publish_status'),
+            'credit' => config('mock_data.credit')
+        ]);
+    }
+
+    public function createFoodBlogMedia($foodId)
+    {
+        return FoodBlogMedia::create([
+            'food_id' => $foodId,
+            'media_path' => config('mock_data.fakeLogo'),
+        ]);
+    }
+
+    public function createSavedFoodBlog($clientUserId,$foodBlogId)
+    {
+        return FoodSavedBlog::create([
+            'client_user_id' => $clientUserId,
+            'food_id' => $foodBlogId
+        ]);
+    }
+
+    public function createPostalCode($zoneId, $townshipId)
+    {
+        return PostalCode::create([
+            'zone_id' => $zoneId,
+            'directory_township_id' => $townshipId,
+            'area_name' => config('mock_data.areaName'),
+            'area_postal_code' => config('mock_data.postalCode')
         ]);
     }
 
