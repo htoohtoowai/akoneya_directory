@@ -21,7 +21,7 @@ class CreateDirectorySubcategoriesTable extends Migration
                 $table->string('subcategory_name_zh')->nullable();
                 $table->string('service_code');
                 $table->unsignedBigInteger('category_id')->nullable();
-                $table->boolean('deleted_status')->default('0');
+                $table->boolean('publish_status')->default('1');
                 $table->timestamps();
             });
         }

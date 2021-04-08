@@ -17,7 +17,7 @@ class TravelBlogRepository extends BaseRepository
     public function __construct(ResponseRepository $responseRepo)
     {
         $this->responseRepo = $responseRepo;
-        $this->disableDeletedStatus = config('enums.disableDeletedStatus');
+        $this->enablePublishStatus = config('enums.enablePublishStatus');
         $this->perPage = config('enums.perPage');
         $this->nextId = null;
         $this->requestAuthEmptyStatus = 0;
@@ -30,7 +30,7 @@ class TravelBlogRepository extends BaseRepository
 
         if ($nextId != "" && $nextId != 'null') {
         
-            $travelBlogInformationQuery = TravelBlog::filter($filter)->where('deleted_status', $this->disableDeletedStatus);
+            $travelBlogInformationQuery = TravelBlog::filter($filter)->where('publish_status', $this->enablePublishStatus);
 
             $travelBlogInformation = $this->getDataByNextId('id', $nextId, $travelBlogInformationQuery);
          
@@ -52,7 +52,7 @@ class TravelBlogRepository extends BaseRepository
     public function getDetail($id, $clientUserId)
     {
         $traveBlogInfo = [];
-        $travelBlog = TravelBlog::where('id', $id)->where('deleted_status', $this->disableDeletedStatus)->first();
+        $travelBlog = TravelBlog::where('id', $id)->where('publish_status', $this->enablePublishStatus)->first();
         if (!$travelBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }

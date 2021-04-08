@@ -128,7 +128,7 @@ abstract class TestCase extends BaseTestCase
             'image' => config('mock_data.fakeLogo'),
             'primary_color_code' => config('mock_data.colorCode'),
             'secondary_color_code' => config('mock_data.colorCode'),
-            'deleted_status' => config('mock_data.deleteStatus'),
+            'publish_status' => config('mock_data.publish_status'),
         ]);
     }
 

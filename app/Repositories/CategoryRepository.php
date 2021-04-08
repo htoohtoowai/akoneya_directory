@@ -22,7 +22,7 @@ class CategoryRepository extends BaseRepository
         $this->request = $request;
         $this->responseRepo = $responseRepo;
         $this->perPage = config('enums.perPage');
-        $this->disableDeletedStatus = config('enums.disableDeletedStatus');
+        $this->enablePublishStatus = config('enums.enablePublishStatus');
         $this->nextId = null;
     }
     
@@ -44,12 +44,13 @@ class CategoryRepository extends BaseRepository
     {
         $categories = [];
         $categoryList = (new CategoryListCollection($categories, $this->nextId))->categoryName($categoryName);
-
+        
         if ($request->nextId != "" && $request->nextId != 'null') {
 
-            $categoryQuery =  $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')->where('deleted_status', $this->disableDeletedStatus);
+            $categoryQuery =  $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')->where('publish_status', $this->enablePublishStatus);
             
             $categories = $this->getDataOrderedByName($categoryName, $request->nextId, $this->model, $categoryQuery);
+           
 
             $categoryList = (new CategoryListCollection($categories['result'], $categories['nextId']))->categoryName($categoryName);
         }

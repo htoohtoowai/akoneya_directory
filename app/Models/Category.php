@@ -22,6 +22,6 @@ class Category extends Model
 
     public function subCategoryCount()
     {
-    	return $this->subCategories()->where('deleted_status', config('enums.disableDeletedStatus'))->count();
+    	return $this->subCategories()->where('publish_status', config('enums.enablePublishStatus'))->count();
     }
 }

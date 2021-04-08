@@ -22,7 +22,7 @@ class CreateDirectoryCategoriesTable extends Migration
                 $table->string('image')->nullable();
                 $table->string('primary_color_code');
                 $table->string('secondary_color_code');
-                $table->boolean('deleted_status')->default('0');
+                $table->boolean('publish_status')->default('1');
                 $table->timestamps();
             });
         }
