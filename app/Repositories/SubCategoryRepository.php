@@ -17,7 +17,7 @@ class SubCategoryRepository extends BaseRepository
         $this->badRequestStatusCode = config('http_status.badRequest');
         $this->notFoundStatusCode = config('http_status.badRequest');
         $this->unauthorizedStatusCode = config('http_status.unauthorized');
-        $this->disableDeletedStatus = config('enums.disableDeletedStatus');
+        $this->enablePublishStatus = config('enums.enablePublishStatus');
         $this->responseRepo = $responseRepo;
         $this->serviceRepo = $serviceRepo;
         $this->perPage = config('enums.perPage');
@@ -34,7 +34,7 @@ class SubCategoryRepository extends BaseRepository
             $subCategoryName = 'subcategory_name_mm';
         }
 
-        $category = Category::where('id', $categoryId)->where('deleted_status', $this->disableDeletedStatus)->first();
+        $category = Category::where('id', $categoryId)->where('publish_status', $this->enablePublishStatus)->first();
 		if (!$category) {
             throw new NotFoundException(trans('message.notFoundMsg'));
 		}
@@ -51,7 +51,7 @@ class SubCategoryRepository extends BaseRepository
         if ($request->nextId != "" && $request->nextId != 'null') {
 
             $subCategoryQuery = $this->subCategoryModel->select('id', $subCategoryName, 'service_code')
-                                                        ->where('deleted_status', $this->disableDeletedStatus)
+                                                        ->where('publish_status', $this->enablePublishStatus)
                                                         ->where('category_id', $categoryId);
                                                         
             $subCategories = $this->getDataOrderedByName($subCategoryName, $request->nextId, $this->subCategoryModel, $subCategoryQuery);
