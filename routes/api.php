@@ -42,10 +42,10 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
                 Route::get('/{id}', 'FoodBlogController@getFoodBlogDetail');
             });
         // });
-        // Route::group(['middleware' => 'authenticate.to.uaa'], function () {
+        Route::group(['middleware' => 'authenticate.to.uaa'], function () {
             Route::get('foodBlogs/{id}/save', 'SavedFoodBlogController@saveFoodBlog');
             Route::delete('/savedFoodBlogs/{foodBlogId}', 'SavedFoodBlogController@deleteSaveFoodBlog');
             Route::get('savedFoodBlogs', 'SavedFoodBlogController@getSavedFoodBlogList');
-        // });
+        });
     });
 });
