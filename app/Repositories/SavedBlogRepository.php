@@ -24,21 +24,17 @@ class SavedBlogRepository extends BaseRepository
         $this->nextId = null;
         $this->clientUserId = 'client_user_id';
         $this->travelBlogId = 'travel_blog_id';
-        $this->deleteStatus = 'deleted_status';
         $this->perPage = config('enums.perPage');
-        $this->disableDeletedStatus = config('enums.disableDeletedStatus');
+        $this->enablePublishStatus = config('enums.enablePublishStatus');
     }
 
     public function saveBlog($blogId, $clientUserId)
     {
-        $travelBlog = $this->travelBlogModel->where($this->deleteStatus, $this->disableDeletedStatus)->find($blogId);
-       
+        $travelBlog = $this->travelBlogModel->where('publish_status', $this->enablePublishStatus)->find($blogId);
         if (!$travelBlog) {
             throw new NotFoundException(trans('message.notFoundMsg'));
         }
-
         $savedBlogInfo = $this->savedModel->where([[$this->clientUserId, $clientUserId],[$this->travelBlogId, $blogId]])->first();
-       
         if (empty($savedBlogInfo)) {
             $this->savedModel->create([
                 $this->clientUserId => $clientUserId,
