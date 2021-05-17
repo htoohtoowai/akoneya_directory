@@ -15,20 +15,9 @@ class TravelBlogResource extends JsonResource
      */
     public function toArray($request)
     {
-        switch ($request->header('Content-Language')) {
-            case 'mm':
-                $title = $this->title_mm;
-                break;
-            case 'zh':
-                $title = $this->title_zh;
-                break;
-            default:
-                $title = $this->title;
-                break;
-        }
         return [
             'id' => $this->id,
-            'title' => $title,
+            'title' => changeLanguage($request, $this->title, $this->title_mm, $this->title_zh),
             'location' => config('zones.zoneSelections.'.$this->zone_id.'.name') ,
             'photo' => $this->main_image ? getFileUrlFromAkoneyaMedia($this->main_image) : "",
             'isSaved' => $this->isSaved,

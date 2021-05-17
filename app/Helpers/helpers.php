@@ -37,7 +37,7 @@ if(!function_exists('deleteFileFromAkoneyaMedia')) {
 }
 
 /*
- * Get Fiel URL from Akoneya Medai
+ * Get File URL from Akoneya Medai
  */
 if(!function_exists('getFileUrlFromAkoneyaMedia')){
 
@@ -67,5 +67,21 @@ if (!function_exists("decryptToken")) {
         $iv = Config::get('services.ivKey');
 
         return openssl_decrypt($token, AES_256_CBC, $encryption_key, 0, $iv);
+    }
+}
+
+if(!function_exists("changeLanguage")){
+    function changeLanguage($request, $en, $mm, $zh)
+    {
+        $headerLanguage = $request->header('Content-Language');
+       
+        if ($headerLanguage == 'mm' && $mm != null){
+            $lang = $mm;
+        } elseif ($headerLanguage == 'zh' && $zh != null){
+            $lang = $zh;
+        } else {
+            $lang = $en;
+        }
+        return $lang;
     }
 }
