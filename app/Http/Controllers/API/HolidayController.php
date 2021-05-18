@@ -11,10 +11,10 @@ class HolidayController extends Controller
     public function __construct(HolidayRepository $holidayRepo)
     {
         $this->holidayRepo = $holidayRepo;
-      
     }
+    
     public function getHolidays(Request $request)
     {
-    	return $this->holidayRepo->getHolidayList($request->year,$request->month);
+    	return $this->holidayRepo->getHolidayList($request->year, $request->month);
     }
 }

@@ -16,7 +16,7 @@ class Holiday extends JsonResource
     {
         return [
             'date' => $this->date,
-            'description' => $this->description
+            'description' => changeLanguage($request, $this->description, $this->description_mm, $this->description_zh)
         ];
     }
 }

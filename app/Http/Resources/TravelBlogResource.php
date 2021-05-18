@@ -17,7 +17,7 @@ class TravelBlogResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'title' => changeLanguage($request, $this->title, $this->title_mm, $this->title_zh),
             'location' => config('zones.zoneSelections.'.$this->zone_id.'.name') ,
             'photo' => $this->main_image ? getFileUrlFromAkoneyaMedia($this->main_image) : "",
             'isSaved' => $this->isSaved,

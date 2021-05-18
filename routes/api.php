@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::group(['prefix' => 'v1.0'], function () {
-        Route::group(['middleware' => 'check.api.key'], function () {
+        // Route::group(['middleware' => 'check.api.key'], function () {
             Route::get('categories', 'CategoryController@getCategoryList');
             Route::get('categories/{id}/subCategories', 'SubCategoryController@getSubCategoryList');
             Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
@@ -41,7 +41,7 @@ Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
                 Route::get('/', 'FoodBlogController@getFoodBlogList');
                 Route::get('/{id}', 'FoodBlogController@getFoodBlogDetail');
             });
-        });
+        // });
         Route::group(['middleware' => 'authenticate.to.uaa'], function () {
             Route::get('foodBlogs/{id}/save', 'SavedFoodBlogController@saveFoodBlog');
             Route::delete('/savedFoodBlogs/{foodBlogId}', 'SavedFoodBlogController@deleteSaveFoodBlog');

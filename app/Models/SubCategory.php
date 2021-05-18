@@ -20,7 +20,6 @@ class SubCategory extends Model
     	$directoryService = config("directory_services.codes.$this->service_code");
     	$serviceModelClassName = $directoryService["model"];
         $serviceModel = new $serviceModelClassName();
-    	
     	return $serviceModel->where('deleted_status', config('enums.disableDeletedStatus'))->count();
     }
 }

@@ -22,7 +22,7 @@ class CreateTravelBlogsTable extends Migration
                 $table->text('history');
                 $table->text('check_in_point');
                 $table->string('main_image', 225);
-                $table->boolean('deleted_status')->default('0');
+                $table->boolean('publish_status')->default('1');
                 $table->index(['title','zone_id']);
             });
         }

@@ -29,7 +29,7 @@ class CreateFoodTable extends Migration
             $table->string('note_mm', 200);
             $table->string('note_zh', 200);
             $table->string('credit', 200);
-            $table->boolean('publish_status');
+            $table->boolean('publish_status')->default('1');
             $table->timestamps();
             $table->index(['title', 'title_mm', 'title_zh', 'category_id']);
 

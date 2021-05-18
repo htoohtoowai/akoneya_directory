@@ -16,7 +16,8 @@ class FoodBlogTest extends TestCase
         parent::setUp();
         $this->user = $this->createUser();
         $this->token = JWTAuth::fromUser($this->user);
-        $this->headers = ['Accept' => 'application/json','Authorization' => "Bearer $this->token",'Api-Key' => $this->apiKeyToken];
+        // $this->headers = ['Accept' => 'application/json','Authorization' => "Bearer $this->token",'Api-Key' => $this->apiKeyToken];
+        $this->headers = ['Accept' => 'application/json','Authorization' => "Bearer $this->token"];
         $this->header = ['Accept' => 'application/json','Authorization' => "Bearer $this->token"];
         $this->foodCategory = $this->createFoodBlogCategory();
         $this->foodBlog = $this->createFoodBlog($this->foodCategory->id);
@@ -130,7 +131,6 @@ class FoodBlogTest extends TestCase
                 ],
                 $this->successStatusCode,
                 $this->successMsg
-                
             )
         );
     }
