@@ -22,6 +22,7 @@ class TravelBlogDetailResource extends JsonResource
             'overView' => changeLanguage($request, $this->overview, $this->overview_mm, $this->overview_zh),
             'history' => changeLanguage($request, $this->history, $this->history_mm, $this->history_zh),
             'checkInPoint' => changeLanguage($request, $this->check_in_point, $this->check_in_point_mm, $this->check_in_point_zh),
+            'credit'=>$this->credit ?? "",
             'mediaList' => TravelBlogMediaResource::collection($this->mediaList),
             'isSaved' => $this->isSaved,
        ];
