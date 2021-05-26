@@ -8,7 +8,10 @@ class TravelBlogFilter extends Filter
 
     public function title($value)
     {
-        return $this->builder->where('title', 'LIKE', "%{$value}%");
+        return $this->builder
+            ->where(function ($query) use ($value) {
+                $query->orwhere('title', 'LIKE', "%{$value}%")->orwhere('title_mm', 'LIKE', "%{$value}%")->orwhere('title_zh', 'LIKE', "%{$value}%");
+            });
     }
 
     public function location($value)

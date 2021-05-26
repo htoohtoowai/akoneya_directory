@@ -18,6 +18,6 @@ class ServiceController extends Controller
 
     public function getServiceList($subCategoryId, Request $request)
     {
-        return $this->serviceRepo->getServiceList($subCategoryId, $this->serviceFilter, $request->nextId);
+        return $this->serviceRepo->getServiceList($subCategoryId, $this->serviceFilter, $request);
     }
 }

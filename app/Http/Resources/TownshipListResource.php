@@ -16,7 +16,7 @@ class TownshipListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->township_name
+            'name' => changeLanguage($request, $this->township_name, $this->township_name_mm, $this->township_name_zh),
         ];
     }
 }
