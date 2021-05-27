@@ -14,10 +14,10 @@ class AddMultilanguageInDirectoryMobilePhoneAndAccessoriesTable extends Migratio
     public function up()
     {
         Schema::table('directory_mobile_phone_and_accessories', function (Blueprint $table) {
-            $table->text('name_mm')->nullable();
-            $table->text('name_zh')->nullable();
-            $table->text('address_mm')->nullable();
-            $table->text('address_zh')->nullable();
+            $table->string('name_mm')->nullable();
+            $table->string('name_zh')->nullable();
+            $table->string('address_mm', 225)->nullable();
+            $table->string('address_zh', 225)->nullable();
         });
     }
 
