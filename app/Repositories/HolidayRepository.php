@@ -16,6 +16,19 @@ class HolidayRepository extends BaseRepository
 	{
         $this->model = $model;
         $this->responseRepo = $responseRepo;
+        $this->enabledHolidayStatus = config('enums.enabledHolidayStatus');
+    }
+
+    public function isHoliday($holidays)
+    {
+        foreach ($holidays as $holiday) {
+            if ($holiday->is_holiday == $this->enabledHolidayStatus) {
+                $holiday->isHoliday = true;
+            } else {
+                $holiday->isHoliday = false;
+            } 
+        } 
+        return $holidays;
     }
 
     public function getHolidayList($year, $month)
@@ -25,17 +38,19 @@ class HolidayRepository extends BaseRepository
                                     ->whereMonth('date', $month)
                                     ->orderBy('date','ASC')
                                     ->get();
+            $holidayList = $this->isHoliday($holidays);                    
         }
         elseif ($year){
             $holidays = $this->model->whereYear('date', $year)
                                     ->orderBy('date','ASC')
                                     ->get();
+            $holidayList = $this->isHoliday($holidays);      
         }
         else {
-            $holidays = [];
+            $holidayList = [];
         }
 
-        $data = HolidayResource::collection($holidays);
+        $data = HolidayResource::collection($holidayList);
         return $this->responseRepo->successResponse(["holidays" => $data], $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 }
