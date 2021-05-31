@@ -45,4 +45,18 @@ class BaseRepository
         }
         return ["result" => $data, "nextId" => $this->nextId];
     }
+
+    public function getNameByMultiLanguage($request, $enName, $mmName, $zhname)
+    {
+        $headerLanguage = $request->header('Content-Language');
+       
+        if ($headerLanguage == 'mm'){
+            $name = $mmName;
+        } elseif ($headerLanguage == 'zh'){
+            $name = $zhname;
+        } else {
+            $name = $enName;
+        }
+        return $name;
+    }
 }

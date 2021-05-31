@@ -16,8 +16,8 @@ class ServiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'address' => $this->address,
+            'name' => changeLanguage($request, $this->name, $this->name_mm, $this->name_zh),
+            'address' => changeLanguage($request, $this->address, $this->address_mm, $this->address_zh),
             'phone' => explode(",", $this->phone)
         ];
     }

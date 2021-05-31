@@ -16,12 +16,13 @@ class TravelBlogDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title'=> $this->title,
-            'location' => config('zones.zoneSelections.'.$this->zone_id.'.name') ,
+            'title'=> changeLanguage($request, $this->title, $this->title_mm, $this->title_zh),
+            'location' => trans('zones.zoneSelections.'.$this->zone_id.'.name') ,
             'photo' => $this->main_image ? getFileUrlFromAkoneyaMedia($this->main_image) : "",
-            'overView' => $this->overview,
-            'history' => $this->history,
-            'checkInPoint' => $this->check_in_point,
+            'overView' => changeLanguage($request, $this->overview, $this->overview_mm, $this->overview_zh),
+            'history' => changeLanguage($request, $this->history, $this->history_mm, $this->history_zh),
+            'checkInPoint' => changeLanguage($request, $this->check_in_point, $this->check_in_point_mm, $this->check_in_point_zh),
+            'credit'=>$this->credit ?? "",
             'mediaList' => TravelBlogMediaResource::collection($this->mediaList),
             'isSaved' => $this->isSaved,
        ];
