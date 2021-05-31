@@ -13,8 +13,8 @@ class TownshipController extends Controller
         $this->townshipRepo = $townshipRepo;
     }
 
-    public function getByZoneId($zoneId)
+    public function getByZoneId(Request $request, $zoneId)
     {
-    	return $this->townshipRepo->getByZoneId($zoneId);
+    	return $this->townshipRepo->getByZoneId($request, $zoneId);
     }
 }

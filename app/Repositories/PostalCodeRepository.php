@@ -38,7 +38,7 @@ class PostalCodeRepository extends BaseRepository
     public function searchByTownshipName($zoneId, $filter)
     { 
         return $this->model->join('directory_townships','postal_codes.directory_township_id', '=', 'directory_townships.id')
-                                ->select('postal_codes.*','directory_townships.township_name')
+                                ->select('postal_codes.*','directory_townships.*')
                                 ->filter($filter)
                                 ->where('postal_codes.zone_id', $zoneId)
                                 ->where('directory_townships.deleted_status', $this->disableDeletedStatus);
