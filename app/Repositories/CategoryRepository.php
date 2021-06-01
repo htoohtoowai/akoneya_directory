@@ -49,7 +49,7 @@ class CategoryRepository extends BaseRepository
 
             $categoryQuery =  $this->model->select('id', $categoryName, 'image', 'primary_color_code', 'secondary_color_code')->where('publish_status', $this->enablePublishStatus);
             
-            $categories = $this->getCategoryByName($categoryName, $request->nextId, $this->model, $categoryQuery);
+            $categories = $this->getDataOrderedByName($categoryName, $request->nextId, $this->model, $categoryQuery);
            
 
             $categoryList = (new CategoryListCollection($categories['result'], $categories['nextId']))->categoryName($categoryName);
