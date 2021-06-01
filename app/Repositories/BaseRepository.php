@@ -29,13 +29,22 @@ class BaseRepository
 
     public function getDataOrderedByName($name, $nextId, $model, $queryInfo)
     {
+        dd($name);
         if ($nextId != 0) {
             $nextData = $model->find($nextId);
-            if ($nextData) {
-                $data = $queryInfo->where($name, '>=', $nextData->$name);
+           
+         
+            if ($nextData) { 
+                if($nextData->$name!=null){
+                    $data = $queryInfo->where($name, '>=', $nextData->$name);
+                }
+                
+               
             }
+            // dd($data);
         }
         $data = $queryInfo->orderBy($name)->limit($this->perPage + 1)->get();
+        //  dd($data);
 
         $totalCount = $data->count();
 
