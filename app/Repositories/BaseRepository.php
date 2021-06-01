@@ -2,7 +2,7 @@
 namespace App\Repositories;
 
 class BaseRepository
-{  
+{
     public function __construct()
     {
         $this->perPage = config('enums.perPage');
@@ -29,22 +29,34 @@ class BaseRepository
 
     public function getDataOrderedByName($name, $nextId, $model, $queryInfo)
     {
-        dd($name);
         if ($nextId != 0) {
             $nextData = $model->find($nextId);
-           
-         
-            if ($nextData) { 
-                if($nextData->$name!=null){
-                    $data = $queryInfo->where($name, '>=', $nextData->$name);
-                }
-                
-               
+            if ($nextData) {
+                $data = $queryInfo->where('name', '>=', $nextData->name);
             }
-            // dd($data);
         }
-        $data = $queryInfo->orderBy($name)->limit($this->perPage + 1)->get();
-        //  dd($data);
+        $data = $queryInfo->orderBy('name')->limit($this->perPage + 1)->get();
+
+        $totalCount = $data->count();
+
+        if ($totalCount > $this->perPage) {
+            $this->nextId = $data[$this->perPage]->id;
+            unset($data[$totalCount - 1]);
+        }
+        return ["result" => $data, "nextId" => $this->nextId];
+    }
+
+    public function getCategoryByName($categoryName, $nextId, $model, $categoryQuery)
+    {
+        if ($nextId != 0) {
+            $nextData = $model->find($nextId);
+         
+            if ($nextData) {
+                $data = $categoryQuery->where($categoryName, '>=', $nextData->$name);
+            }
+        }
+        $data = $categoryQuery->orderBy($categoryName)->limit($this->perPage + 1)->get();
+
 
         $totalCount = $data->count();
 
@@ -59,9 +71,9 @@ class BaseRepository
     {
         $headerLanguage = $request->header('Content-Language');
        
-        if ($headerLanguage == 'mm'){
+        if ($headerLanguage == 'mm') {
             $name = $mmName;
-        } elseif ($headerLanguage == 'zh'){
+        } elseif ($headerLanguage == 'zh') {
             $name = $zhname;
         } else {
             $name = $enName;
