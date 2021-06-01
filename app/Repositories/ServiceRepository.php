@@ -57,11 +57,10 @@ class ServiceRepository extends BaseRepository
         if ($request->nextId != ""  && $request->nextId != 'null') {
             $totalResultCount = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus)->count();
             
-            $serviceInformationQuery = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus);
+           
 
-            $name = $this->getNameByMultiLanguage($request, 'name', 'name_mm', 'name_zh');
-            
-            $serviceInformation = $this->getDataOrderedByName($name, $request->nextId, $serviceModel, $serviceInformationQuery);
+            $serviceInformationQuery = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus);
+            $serviceInformation = $this->getDataOrderedByName('name', $request->nextId, $serviceModel, $serviceInformationQuery);
 
             $serviceList = new ServiceResourceCollection($serviceInformation['result'], $serviceInformation['nextId'], $totalResultCount);
         }

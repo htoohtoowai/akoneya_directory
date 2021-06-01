@@ -2,7 +2,7 @@
 namespace App\Repositories;
 
 class BaseRepository
-{  
+{
     public function __construct()
     {
         $this->perPage = config('enums.perPage');
@@ -45,14 +45,13 @@ class BaseRepository
         }
         return ["result" => $data, "nextId" => $this->nextId];
     }
-
     public function getNameByMultiLanguage($request, $enName, $mmName, $zhname)
     {
         $headerLanguage = $request->header('Content-Language');
        
-        if ($headerLanguage == 'mm'){
+        if ($headerLanguage == 'mm') {
             $name = $mmName;
-        } elseif ($headerLanguage == 'zh'){
+        } elseif ($headerLanguage == 'zh') {
             $name = $zhname;
         } else {
             $name = $enName;
