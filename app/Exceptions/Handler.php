@@ -2,12 +2,14 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-use Illuminate\Auth\AuthenticationException;
 use ErrorException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
@@ -63,7 +65,24 @@ class Handler extends ExceptionHandler
             ],Response::HTTP_NOT_FOUND);
         }
 
-        if ($exception instanceof \Illuminate\Database\QueryException) 
+        if ($exception instanceof HttpException){
+            return response()->json([
+                'result' => null,
+                'statusCode' => $exception->getStatusCode(),
+                'message' => $exception->getMessage()
+            ],$exception->getStatusCode());
+        }
+
+        if ($exception instanceof QueryException) 
+        {
+            return response()->json([
+                'result' => null,
+                'statusCode' => 500,
+                'message' => 'Internal Server Error.',
+            ], 500);          
+        }
+
+        if ($exception instanceof QueryException) 
         {
             return response()->json([
                 'result' => null,
