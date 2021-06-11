@@ -22,7 +22,7 @@ class HolidayRepository extends BaseRepository
     public function isHoliday($holidays)
     {
         foreach ($holidays as $holiday) {
-            $holiday->isHoliday = ($holiday->is_holiday == $this->enabledHolidayStatus ? true : false);
+            $holiday->isHoliday = ($holiday->is_holiday == $this->enabledHolidayStatus);
         } 
         return $holidays;
     }
