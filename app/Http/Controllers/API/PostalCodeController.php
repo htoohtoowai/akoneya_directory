@@ -5,18 +5,17 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\PostalCodeRepository;
-use App\Filters\TownshipFilter;
+use App\Filters\PostalCodeFilter;
 
 class PostalCodeController extends Controller
 {
-    public function __construct(PostalCodeRepository $postalCodeRepo, TownshipFilter $townshipFilter)
+    public function __construct(PostalCodeRepository $postalCodeRepo)
     {
         $this->postalCodeRepo = $postalCodeRepo;
-        $this->townshipFilter = $townshipFilter;
     }
 
-    public function getPostalCodes(Request $request)
+    public function getPostalCodes(Request $request,PostalCodeFilter $filter)
     {
-    	return $this->postalCodeRepo->getPostalCodes($request, $this->townshipFilter);
+    	return $this->postalCodeRepo->getPostalCodes($request, $filter);
     }
 }

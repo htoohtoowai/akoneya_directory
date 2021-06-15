@@ -16,8 +16,8 @@ class PostalCodeList extends JsonResource
     {
         return [
             'id' => $this->id,
-            'township' => $this->township_name,
-            'area' => $this->area_name,
+            'township' => changeLanguage($request, $this->township->township_name, $this->township->township_name_mm, $this->township->township_name_zh),
+            'area' => changeLanguage($request, $this->area_name, $this->area_name_mm, $this->area_name_zh),
             'postalCode' => $this->area_postal_code
         ];
     }

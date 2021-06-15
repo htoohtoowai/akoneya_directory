@@ -16,12 +16,14 @@ class TownshipRepository extends BaseRepository
 		$this->disableDeletedStatus = config('enums.disableDeletedStatus');
 	}
 
-	public function getByZoneId($zoneId)
+	public function getByZoneId($request, $zoneId)
 	{
-		$townships = $this->townshipModel->where('zone_id',$zoneId)->where('deleted_status', $this->disableDeletedStatus)->orderBy('township_name')->get();
+		$townshipName = $this->getNameByMultiLanguage($request, 'township_name', 'township_name_mm', 'township_name_zh');
+		
+		$townships = $this->townshipModel->where('zone_id',$zoneId)->where('deleted_status', $this->disableDeletedStatus)->orderBy($townshipName)->get();
 		
 		$data['townships'] = TownshipListResource::collection($townships);
 
-		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, $this->responseRepo->successMsg);
+		return $this->responseRepo->successResponse($data,$this->responseRepo->successStatusCode, trans('message.successMsg'));
 	}
 }

@@ -17,7 +17,7 @@ class TravelBlogDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'title'=> changeLanguage($request, $this->title, $this->title_mm, $this->title_zh),
-            'location' => config('zones.zoneSelections.'.$this->zone_id.'.name') ,
+            'location' => trans('zones.zoneSelections.'.$this->zone_id.'.name') ,
             'photo' => $this->main_image ? getFileUrlFromAkoneyaMedia($this->main_image) : "",
             'overView' => changeLanguage($request, $this->overview, $this->overview_mm, $this->overview_zh),
             'history' => changeLanguage($request, $this->history, $this->history_mm, $this->history_zh),

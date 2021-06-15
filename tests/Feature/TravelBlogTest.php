@@ -30,7 +30,7 @@ class TravelBlogTest extends TestCase
                     [
                         "id" => $this->travelBlog->id,
                         "title" => $this->travelBlog->title,
-                        "location" => config('zones.zoneSelections.'.$this->travelBlog->zone_id.'.name'),
+                        "location" => trans('zones.zoneSelections.'.$this->travelBlog->zone_id.'.name'),
                         "photo" => getFileUrlFromAkoneyaMedia($this->travelBlog->main_image),
                         "isSaved" => (TravelSavedBlog::where('client_user_id', $this->user->id)->where('travel_blog_id', $this->travelBlog->id)->first() != null)
                     ]
@@ -52,7 +52,7 @@ class TravelBlogTest extends TestCase
             [
                 "id" => $this->travelBlog->id,
                 "title" => $this->travelBlog->title,
-                "location" => config('zones.zoneSelections.'.$this->travelBlog->zone_id.'.name'),
+                "location" => trans('zones.zoneSelections.'.$this->travelBlog->zone_id.'.name'),
                 "photo" => getFileUrlFromAkoneyaMedia($this->travelBlog->main_image),
                 "overView" => $this->travelBlog->overview,
                 "history" => $this->travelBlog->history,

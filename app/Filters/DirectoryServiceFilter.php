@@ -8,7 +8,10 @@ class DirectoryServiceFilter extends Filter
 
     public function name($value)
     {
-        return $this->builder->where('name', 'LIKE', "%{$value}%");
+        return $this->builder
+            ->where(function ($query) use ($value) {
+                $query->orwhere('name', 'LIKE', "%{$value}%")->orwhere('name_mm', 'LIKE', "%{$value}%")->orwhere('name_zh', 'LIKE', "%{$value}%");
+            });
     }
 
     public function zoneId($value)

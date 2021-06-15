@@ -45,7 +45,7 @@ class ServiceRepository extends BaseRepository
         return $serviceModel;
     }
 
-    public function getServiceList($subCategoryId, $filter, $nextId)
+    public function getServiceList($subCategoryId, $filter, $request)
     {
         $totalResultCount = 0;
         $serviceInformation = [];
@@ -54,12 +54,13 @@ class ServiceRepository extends BaseRepository
         $subCategory = $this->checkSubCategory($subCategoryId);
         $serviceModel = $this->checkServiceModel($subCategory->service_code);
        
-        if ($nextId != ""  && $nextId != 'null') {
+        if ($request->nextId != ""  && $request->nextId != 'null') {
             $totalResultCount = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus)->count();
             
+           
+
             $serviceInformationQuery = $serviceModel->filter($filter)->where('deleted_status', $this->disableDeletedStatus);
-            
-            $serviceInformation = $this->getDataOrderedByName('name', $nextId, $serviceModel, $serviceInformationQuery);
+            $serviceInformation = $this->getDataOrderedByName('name', $request->nextId, $serviceModel, $serviceInformationQuery);
 
             $serviceList = new ServiceResourceCollection($serviceInformation['result'], $serviceInformation['nextId'], $totalResultCount);
         }

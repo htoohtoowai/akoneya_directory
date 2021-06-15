@@ -8,6 +8,9 @@ class TownshipFilter extends Filter
 
     public function township($value)
     {
-        return $this->builder->where('township_name', 'LIKE', "%{$value}%");
+        return $this->builder
+            ->where(function ($query) use ($value) {
+                $query->orwhere('township_name', 'LIKE', "%{$value}%")->orwhere('township_name_mm', 'LIKE', "%{$value}%")->orwhere('township_name_zh', 'LIKE', "%{$value}%");
+            });
     }
 }
