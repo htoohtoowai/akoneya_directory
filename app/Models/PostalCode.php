@@ -16,4 +16,9 @@ class PostalCode extends Model
     { 
         $filters->apply($query);
     }
+
+    public function township()
+    {
+        return $this->belongsTo(Township::class,'directory_township_id','id');
+    }
 }
