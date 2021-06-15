@@ -19,28 +19,16 @@ class PostalCodeRepository extends BaseRepository
         $this->perPage = config('enums.perPage');
         $this->disableDeletedStatus = config('enums.disableDeletedStatus');
         $this->nextId = null;
+        $this->data = [];
     }
     
     public function getPostalCodes($request, $filter)
     {
-        $postalCodeInfos = [];
-        $postalCodeList = new PostalCodeListCollection($postalCodeInfos, $this->nextId);
-
         if ($request->nextId != "" && $request->nextId != 'null') {
-            $postalCodeId = 'postal_codes.id';
-            $postalCodeQuery = $this->searchByTownshipName($request->zoneId, $filter);
-            $postalCodeInfos = $this->getDataByNextId($postalCodeId, $request->nextId, $postalCodeQuery);
-            $postalCodeList = new PostalCodeListCollection($postalCodeInfos['result'], $postalCodeInfos['nextId']);
+            $queryInfo = $this->model->filter($filter);
+            $data = $this->getDataByNextId('id',$request->nextId,$queryInfo);
+            return $this->responseRepo->successResponse(new PostalCodeListCollection($data['result'],$data['nextId']), $this->responseRepo->successStatusCode, trans('message.successMsg'));
         }
-        return $this->responseRepo->successResponse($postalCodeList, $this->responseRepo->successStatusCode, trans('message.successMsg'));
-    }
-
-    public function searchByTownshipName($zoneId, $filter)
-    { 
-        return $this->model->join('directory_townships','postal_codes.directory_township_id', '=', 'directory_townships.id')
-                                ->select('postal_codes.*','directory_townships.*')
-                                ->filter($filter)
-                                ->where('postal_codes.zone_id', $zoneId)
-                                ->where('directory_townships.deleted_status', $this->disableDeletedStatus);
+        return $this->responseRepo->successResponse(new PostalCodeListCollection($this->data,$this->nextId), $this->responseRepo->successStatusCode, trans('message.successMsg'));
     }
 }
