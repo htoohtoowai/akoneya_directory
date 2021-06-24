@@ -13,8 +13,17 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
 Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::group(['prefix' => 'v1.0'], function () {
+            Route::get('checkServiceStatus',function(){
+                return  response()->json([
+                    'result' => "",
+                    'statusCode' => 200,
+                    'message' => "success"
+                ],200);
+            }); 
         // Route::group(['middleware' => 'check.api.key'], function () {
             Route::get('categories', 'CategoryController@getCategoryList');
             Route::get('categories/{id}/subCategories', 'SubCategoryController@getSubCategoryList');
