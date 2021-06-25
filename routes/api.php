@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,41 +14,42 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => 'localization', 'namespace' => 'API'], function () {
+
+Route::group(['middleware' => 'localization','namespace'=>'API'], function () {
     Route::group(['prefix' => 'v1.0'], function () {
-        Route::get('checkServiceStatus', function () {
-            return response()->json([
-                    'result' => '',
+            Route::get('checkServiceStatus',function(){
+                return  response()->json([
+                    'result' => "",
                     'statusCode' => 200,
-                    'message' => 'success',
-                ], 200);
-        });
+                    'message' => "success"
+                ],200);
+            }); 
         // Route::group(['middleware' => 'check.api.key'], function () {
-        Route::get('categories', 'CategoryController@getCategoryList');
-        Route::get('categories/{id}/subCategories', 'SubCategoryController@getSubCategoryList');
-        Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
-        Route::get('zones', 'ZoneController@getZoneList');
-        Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
-        Route::get('holidays', 'HolidayController@getHolidays');
-        Route::get('postalCodes', 'PostalCodeController@getPostalCodes');
+            Route::get('categories', 'CategoryController@getCategoryList');
+            Route::get('categories/{id}/subCategories', 'SubCategoryController@getSubCategoryList');
+            Route::get('subcategories/{subCategoryId}/services', 'ServiceController@getServiceList');
+            Route::get('zones', 'ZoneController@getZoneList');
+            Route::get('zones/{zoneId}/townships', 'TownshipController@getByZoneId');
+            Route::get('holidays', 'HolidayController@getHolidays');
+            Route::get('postalCodes', 'PostalCodeController@getPostalCodes');
 
-        Route::group(['prefix' => 'travelBlogs'], function () {
-            Route::get('/', 'TravelBlogController@getTravelBlogList');
-            Route::get('/{id}', 'TravelBlogController@getDetail');
-        });
-
-        Route::group(['middleware' => 'authenticate.to.uaa'], function () {
-            Route::group(['prefix' => 'savedTravelBlog'], function () {
-                Route::get('/', 'SavedBlogController@getSavedBlogList');
-                Route::delete('/{travelBlogId}', 'SavedBlogController@deleteSavedBlog');
+            Route::group(['prefix' => 'travelBlogs'], function () {
+                Route::get('/', 'TravelBlogController@getTravelBlogList');
+                Route::get('/{id}', 'TravelBlogController@getDetail');
             });
-            Route::get('travelBlogs/{id}/save', 'SavedBlogController@saveBlog');
-        });
-        Route::group(['prefix' => 'foodBlogs'], function () {
-            Route::get('categories', 'FoodBlogCategory@getAllCategories');
-            Route::get('/', 'FoodBlogController@getFoodBlogList');
-            Route::get('/{id}', 'FoodBlogController@getFoodBlogDetail');
-        });
+            
+            Route::group(['middleware' => 'authenticate.to.uaa'], function () {
+                Route::group(['prefix' => 'savedTravelBlog'], function () {
+                    Route::get('/', 'SavedBlogController@getSavedBlogList');
+                    Route::delete('/{travelBlogId}', 'SavedBlogController@deleteSavedBlog');
+                });
+                Route::get('travelBlogs/{id}/save', 'SavedBlogController@saveBlog');
+            });
+            Route::group(['prefix' => 'foodBlogs'], function () {
+                Route::get('categories', 'FoodBlogCategory@getAllCategories');
+                Route::get('/', 'FoodBlogController@getFoodBlogList');
+                Route::get('/{id}', 'FoodBlogController@getFoodBlogDetail');
+            });
         // });
         Route::group(['middleware' => 'authenticate.to.uaa'], function () {
             Route::get('foodBlogs/{id}/save', 'SavedFoodBlogController@saveFoodBlog');
