@@ -62,5 +62,9 @@ return [
 			"name" => "Public University",
 			"model" => "App\Models\PublicUniversity"
 		],
+		"DS0016" => [
+			"name" => "Restaurant",
+			"model" => "App\Models\Restaurant"
+		],
     ]
 ];
